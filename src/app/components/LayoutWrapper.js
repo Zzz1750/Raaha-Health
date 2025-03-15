@@ -6,7 +6,7 @@ import Footer from "./Footer";
 export default function LayoutWrapper({ children }) {
   const pathname = usePathname(); 
 
-  const excludedRoutes = ["/privacy_policy","/cancellation_policy","/tc"];
+  const excludedRoutes = ["/privacy_policy","/cancellation_policy","/tc","/login"];
 
   return (
     <>
