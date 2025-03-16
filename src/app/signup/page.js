@@ -27,7 +27,7 @@ export default function Signup(){
             {step === 1 && <Step1 setStep={setStep} setSignupUserdata  ={setSignupUserdata }  signupUserdata={signupUserdata}/>}
             {step === 2 && <Step2 setStep={setStep} setSignupUserdata  ={setSignupUserdata  }/>}
             {step === 3 && <Step3 setStep={setStep} setSignupUserdata ={setSignupUserdata }/>}
-            {step === 4 && <Step4 setStep={setStep} setSignupUserdata ={setSignupUserdata }/>}
+            {step === 4 && <Step4 setStep={setStep} setSignupUserdata ={setSignupUserdata } signupUserdata={signupUserdata}/>}
             <div className="flex gap-2 absolute bottom-20">
                 {[...Array(totalSteps)].map((_, index) => (
                     <div
@@ -143,13 +143,22 @@ function Step3({setStep ,setSignupUserdata }) {
         </ div>
     )
 }
-function Step4({setStep}) {
+function Step4({setStep , signupUserdata}) {
+
+    const checkemail =() => {
+        if (signupUserdata.email == ""){
+            alert("fill the email field");
+            return false;
+        }
+    };
+    checkemail
+
     return (
         <div className="flex flex-col justify-center items-center h-96 w-96 align-middle gap-5">
             <h1 className="text-2xl">Verify OTP</h1>   
             <div className="flex flex-col justify-center items-center gap-2">
                 <p>
-                    OTP has been shared to <a href="" className="text-blue-400" >test@gmail.com</a>
+                    OTP has been shared to <a href={signupUserdata.email} className="text-blue-400" >{signupUserdata.email? (signupUserdata.email) : "No Mail Provided"}</a>
                 </p>
                 <p>Check your Mail</p>
                 <div className="flex border border-gray-300 rounded-lg h-10 w-60">
