@@ -1,10 +1,31 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/signup', async (req, res) => {
-    const {username}= req.body
-    res.send("Check user");
+const users = [{ name: "john_doe" }, { name: "jane_doe" }];
+
+router.get('/checkUsername', async (req, res) => {
+    const {userName}= req.query;
+    if (!userName) {
+        return res.status(400).json({ error: "Username is required" });
+    }
+    const userExists = users.find((user) => user.name === userName);
+    if (userExists) {
+        return res.status(400).json({ error: "Username already exists" });
+    }
+    else {
+        return res.status(200).json({ message: "Username is available" });
+    }
 });
+
+router.post('/addUser', async (req, res) => {
+    const {userDetails}= req.body;
+    if(!userDetails){
+        return res.status(400).json({ error: "User details are required" });
+    }
+    console.log(userDetails);
+
+});
+
 
 router.post('/signup', async (req, res) => {});
 
