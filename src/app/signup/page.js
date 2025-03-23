@@ -2,6 +2,7 @@
 import { useState,useEffect } from "react";
 import { FaUser, FaPhone, FaChevronDown, FaCalendarAlt } from "react-icons/fa";
 import { Log_sign_header } from "../login/components/Log_sign_header";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup(){
     const [step, setStep] = useState(1);
@@ -266,8 +267,10 @@ function Step4({setStep , signupUserdata, addUser}) {
     checkemail
 
     const handleSubmit= async()=>{
+
         try{
             addUser();
+            window.location.href = "/login"; 
         }
         catch(error){
             console.error("Error adding user:", error);
