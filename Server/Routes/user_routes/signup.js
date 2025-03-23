@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../../models/User');
 const users = [{ name: "john_doe" }, { name: "jane_doe" }];
 
+
 router.get('/checkUsername', async (req, res) => {
     const {userName}= req.query;
     if (!userName) {
@@ -16,6 +17,7 @@ router.get('/checkUsername', async (req, res) => {
         return res.status(200).json({ message: "Username is available" });
     }
 });
+
 
 router.post('/addUser', async (req, res) => {
     const { userDetails } = req.body;

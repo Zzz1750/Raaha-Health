@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/User/Signup" , require("./Routes/user_routes/signup"));
+app.use("/User/Login" , require("./Routes/user_routes/login"));
 app.get("/", async (req, res) => {
     res.send("Hello, World!");
 })
