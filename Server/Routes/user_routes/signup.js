@@ -29,4 +29,11 @@ router.post('/addUser', async (req, res) => {
 
 router.post('/signup', async (req, res) => {});
 
+router.get('/sendOTP',async (req,res)=>{
+    const {email} = req.query;
+    if(!email){
+        return res.status(400).json({error:"Email is required"});
+    }
+    
+});
 module.exports = router;

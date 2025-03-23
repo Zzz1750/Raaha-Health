@@ -88,6 +88,11 @@ function Step1({setStep , setSignupUserdata ,signupUserdata}) {
     const [tempPassword,settempPassword] = useState("")
     const [disableButtonNext,setButtonNext] = useState(true);
     
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
     // Disable next button
     useEffect(() => {
         if (signupUserdata.email && signupUserdata.password) {
@@ -105,6 +110,10 @@ function Step1({setStep , setSignupUserdata ,signupUserdata}) {
         }
         if(signupUserdata .password == ""){
             alert("Password field is required");
+            return false;
+       }
+       if(validateEmail(signupUserdata.email) == false){
+            alert("Invalid Email");
             return false;
        }
        setStep((prev) => prev + 1) ; 
@@ -135,6 +144,13 @@ function Step2({setStep ,setSignupUserdata , checkUserExisting, signupUserdata }
 
     const [disableButtonNext,setButtonNext] = useState(true);
     
+    const validateNumber = () => {
+        if(signupUserdata.phone == null || signupUserdata.phone.length != 10){
+            alert("Invalid Phone Number");
+            return false;
+        }
+    }
+
     // Disable next button if any field is empty
     useEffect(() => {
         if (signupUserdata.name  && signupUserdata.phone && signupUserdata.gender && signupUserdata.date_of_birth) {
@@ -150,6 +166,9 @@ function Step2({setStep ,setSignupUserdata , checkUserExisting, signupUserdata }
         if(response == "User already exists"){
             alert("User already exists");
             return;
+        }
+        if(validateNumber() == false){
+            return false;
         }
         setStep((prev) => prev + 1)
     };
