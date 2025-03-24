@@ -1,6 +1,17 @@
 const User = require('../models/Usermodel');
 const jwt = require('jsonwebtoken');
 
+const generateAccessToken = (user) => {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' }); // Short-lived token (15 min)
+};
+
+const generateRefreshToken = (user) => {
+    return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' }); // Refresh token (7 days)
+};
+
+// In-memory storage for refresh tokens (Use DB/Redis for production)
+let refreshTokens = [];
+
 // ✅ User Profile (Protected Route)
 exports.getUserProfile = (req, res) => {
     res.json({ message: "Welcome to your profile", user: req.user });
@@ -12,18 +23,45 @@ exports.loginUser = async (req, res) => {
     if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required" });
     }
+
     try {
-        const user = await User.findOne({ email: email, password: password });
+        const user = await User.findOne({ email, password });
         if (!user) {
             return res.status(400).json({ error: "Invalid credentials" });
         }
-        const USER = { name: user.name, role: user.role };
-        const accessToken = jwt.sign(USER, process.env.ACCESS_TOKEN_SECRET);
-        return res.status(200).json({ message: "Login successful", accessToken });
+
+        const userPayload = { name: user.name, role: user.role };
+        const accessToken = generateAccessToken(userPayload);
+        const refreshToken = generateRefreshToken(userPayload);
+
+        refreshTokens.push(refreshToken); // Store refresh token
+
+        return res.status(200).json({ message: "Login successful", accessToken, refreshToken });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: "Internal server error" });
     }
+};
+// 🔹 Refresh Token Endpoint
+exports.refreshToken = (req, res) => {
+    const { token } = req.body;
+    if (!token) return res.status(401).json({ error: "Refresh token required" });
+
+    if (!refreshTokens.includes(token)) return res.status(403).json({ error: "Invalid refresh token" });
+
+    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ error: "Invalid refresh token" });
+
+        const newAccessToken = generateAccessToken({ name: user.name, role: user.role });
+        return res.status(200).json({ accessToken: newAccessToken });
+    });
+};
+
+// 🔹 Logout (Invalidate Refresh Token)
+exports.logout = (req, res) => {
+    const { token } = req.body;
+    refreshTokens = refreshTokens.filter(rt => rt !== token); // Remove token
+    res.status(200).json({ message: "Logged out successfully" });
 };
 
 // ✅ Check if Username Exists
