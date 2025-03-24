@@ -22,7 +22,7 @@ export default function Signup(){
 
     const checkUserExisting = async ()=>{
         try {
-            const response = await fetch(`http://localhost:5000/User/Signup/checkUsername?userName=${signupUserdata.name}`,{ method: "GET",
+            const response = await fetch(`http://localhost:5000/User/checkUsername?userName=${signupUserdata.name}`,{ method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },})
@@ -42,7 +42,7 @@ export default function Signup(){
     const addUser = async ()=>{
         try {
             console.log("Sending Data:", signupUserdata);
-            const response = await fetch(`http://localhost:5000/User/Signup/addUser`,{ method: "POST",
+            const response = await fetch(`http://localhost:5000/User/addUser`,{ method: "POST",
                 body: JSON.stringify({ userDetails: signupUserdata }),
                 headers: {
                     "Content-Type": "application/json",

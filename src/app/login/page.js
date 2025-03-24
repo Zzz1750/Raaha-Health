@@ -1,10 +1,12 @@
 'use client'
 import { Log_sign_header } from "./components/Log_sign_header"
 import { useState,useEffect } from "react";
+import { useRouter } from "next/navigation";
 export default function Login(){
     const [disableButton, setDisableButton] = useState(true);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const router = useRouter();
 
     useEffect(()=>{
         if(email && password){
@@ -17,7 +19,7 @@ export default function Login(){
     
     const handleSubmit = async() => {
        try {
-         const response = await fetch('http://localhost:5000/User/Login/validate',{ method: "POST",
+         const response = await fetch('http://localhost:5000/User/loginUser',{ method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -28,7 +30,8 @@ export default function Login(){
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             if(data.message == "Login successful"){
-                window.location.href = "/";
+                console.log(data.accessToken);
+                router.push("/")
             }
             else{
                 alert("Invalid Credentials");
