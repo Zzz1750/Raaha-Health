@@ -42,7 +42,7 @@ export default function Signup(){
     const addUser = async ()=>{
         try {
             console.log("Sending Data:", signupUserdata);
-            const response = await fetch(`http://localhost:5000/User/addUser`,{ method: "POST",
+            const response = await fetch(`http://localhost:5000/Auth/register`,{ method: "POST",
                 body: JSON.stringify({ userDetails: signupUserdata }),
                 headers: {
                     "Content-Type": "application/json",

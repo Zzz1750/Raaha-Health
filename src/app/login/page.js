@@ -19,11 +19,12 @@ export default function Login(){
     
     const handleSubmit = async() => {
        try {
-         const response = await fetch('http://localhost:5000/User/login',{ method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: email, password: password }),})
+         const response = await fetch('http://localhost:5000/Auth/login', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+            credentials: "include", // ✅ Ensures cookies are sent
+        });
             const data = await response.json();
             console.log(data);
             if (!response.ok) {

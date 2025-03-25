@@ -9,8 +9,13 @@ connectDB();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000'],
+    credentials: true,
+}
+));
 
+app.use("/Auth" , require("./Routes/authRoutes"));
 app.use("/User" , require("./Routes/userRoutes"));
 // app.use("/User/Login" , require("./Routes/user_routes/login"));
 app.get("/", async (req, res) => {
