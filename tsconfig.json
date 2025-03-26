@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx", 
-    "src/middleware.ts"  ],
+    "src/middleware.ts", "src/store/store.js", "src/store/slices/authSlice.js", "src/store/provider.js", "src/store/hooks.js"  ],
   "exclude": [
     "node_modules"
   ]
