@@ -3,12 +3,13 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
-
+const cookieParser = require ('cookie-parser')
 // Connect to MongoDB
 connectDB();
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({
     origin: ['http://localhost:3000'],
     credentials: true,

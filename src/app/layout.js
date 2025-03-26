@@ -5,7 +5,7 @@ import ReduxProvider from "../store/provider"
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { logout } from "../store/slices/authSlice";
+import { logout, login } from "../store/slices/authSlice";
 
 export default function RootLayout({ children }) {
   return (
@@ -31,23 +31,22 @@ function AuthLoader({ children }) {
   useEffect(()=>{
     const refreshAccessToken =async ()=>{
       try {
-        const response = await fetch('http://localhost:5000/Auth/refresh-token',{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: "include",
+          const response = await fetch("http://localhost:5000/Auth/refresh-token", {
+            method: "POST",
+            credentials: "include",  
+            headers: {
+                "Content-Type": "application/json",
+            }
         })
-
        
         if (!response.ok) {
           throw new Error("Failed to refresh token");
         }
 
         const data = await response.json();
-        
+        console.log(JSON.parse(atob(data.accessToken.split(".")[1])))
         if (data?.accessToken) {
-          dispatch(login({accessToken:data.accessToken , user:JSON.parse(atob(data.accessToken.split(".")[1]))}))
+          dispatch(login({accessToken:data.accessToken , user:JSON.parse(atob(data.accessToken.split(".")[1])).user}))
         }
         else{
           dispatch(logout());
@@ -65,6 +64,5 @@ function AuthLoader({ children }) {
     refreshAccessToken();
   }
 }, [dispatch, auth.accessToken, router]);
-console.log("REACHING HERE")
 return children;
 }

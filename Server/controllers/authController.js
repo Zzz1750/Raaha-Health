@@ -1,3 +1,4 @@
+
 const jwt = require('jsonwebtoken');
 const User = require('../models/Usermodel'); 
 
@@ -64,9 +65,9 @@ exports.loginUser = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "Strict",
-            sameSite: "lax", // Important for cross-origin requests
+            secure: true,  // Set to 'true' in production (HTTPS)
             path: "/",
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days,
         });
 
         refreshTokens.push(refreshToken);
@@ -79,17 +80,21 @@ exports.loginUser = async (req, res) => {
 
 // ✅ Refresh Token
 exports.refreshToken = (req, res) => {
-    const { token } = req.body;
-
-    if (!token) return res.status(401).json({ error: "Refresh token required" });
-    if (!refreshTokens.includes(token)) return res.status(403).json({ error: "Invalid refresh token" });
-
-    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err) return res.status(403).json({ error: "Invalid refresh token" });
-
-        const newAccessToken = generateAccessToken({ id: user.id, name: user.name, role: user.role });
-        return res.status(200).json({ accessToken: newAccessToken });
-    });
+    const refreshToken = req.cookies?.refreshToken;
+    if (!refreshToken) return res.status(401).json({ error: "Refresh token required" });
+    
+    try {
+        const decoded = jwt.verify(refreshToken , process.env.REFRESH_TOKEN_SECRET)
+       
+        const newAccessToken= jwt.sign(
+            { user: decoded },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: "15m" }
+        )
+        res.json({accessToken : newAccessToken})
+    } catch (error) {
+        return res.status(403).json({ message: "Forbidden: Invalid refresh token" });
+    }
 };
 
 // ✅ Logout User
