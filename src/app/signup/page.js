@@ -3,7 +3,7 @@ import { useState,useEffect } from "react";
 import { FaUser, FaPhone, FaChevronDown, FaCalendarAlt } from "react-icons/fa";
 import { Log_sign_header } from "../login/components/Log_sign_header";
 import { useNavigate } from "react-router-dom";
-
+import { validateEmail,validatePassword,validatePhonenumber,validateSex } from "./components/validation";
 export default function Signup(){
     const [step, setStep] = useState(1);
     const totalSteps = 4;
@@ -88,11 +88,6 @@ export default function Signup(){
 function Step1({setStep , setSignupUserdata ,signupUserdata}) {
     const [tempPassword,settempPassword] = useState("")
     const [disableButtonNext,setButtonNext] = useState(true);
-    
-    const validateEmail = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
 
     // Disable next button
     useEffect(() => {
@@ -105,12 +100,12 @@ function Step1({setStep , setSignupUserdata ,signupUserdata}) {
 
     // Check if password matches
     const checkPassword = () =>{
-        if(tempPassword !== signupUserdata  .password){
+        if(tempPassword !== signupUserdata.password){
             alert("Password does not match");
             return false;
         }
-        if(signupUserdata .password == ""){
-            alert("Password field is required");
+        if(validatePassword(signupUserdata.password) == false){
+            alert("password should have atleast have 8 letter");
             return false;
        }
        if(validateEmail(signupUserdata.email) == false){
@@ -145,13 +140,6 @@ function Step2({setStep ,setSignupUserdata , checkUserExisting, signupUserdata }
 
     const [disableButtonNext,setButtonNext] = useState(true);
     
-    const validateNumber = () => {
-        if(signupUserdata.phone == null || signupUserdata.phone.length != 10){
-            alert("Invalid Phone Number");
-            return false;
-        }
-    }
-
     // Disable next button if any field is empty
     useEffect(() => {
         if (signupUserdata.name  && signupUserdata.phone && signupUserdata.gender && signupUserdata.date_of_birth) {
@@ -168,7 +156,8 @@ function Step2({setStep ,setSignupUserdata , checkUserExisting, signupUserdata }
             alert("User already exists");
             return;
         }
-        if(validateNumber() == false){
+        if(validatePhonenumber(signupUserdata.phone) == false){
+            alert("Phone number should have exactly 10 digits")
             return false;
         }
         setStep((prev) => prev + 1)

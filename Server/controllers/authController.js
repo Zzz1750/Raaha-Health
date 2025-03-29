@@ -1,6 +1,7 @@
 
 const jwt = require('jsonwebtoken');
 const User = require('../models/Usermodel'); 
+const bcrypt = require ('bcrypt');
 
 const generateAccessToken = (user) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
@@ -23,11 +24,15 @@ exports.addUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: "Email already exists" });
         }
+        const salt=await bcrypt.genSalt(10);
+        console.log("Passweord: ", userDetails.password ,"Type of Password: ",typeof userDetails.password, "salt: " , salt)
+        const hashedPassword = await bcrypt.hash(userDetails.password, salt);
+
         const newUser = new User({
             username: userDetails.name,
             email: userDetails.email,
             phone: userDetails.phone,
-            password: userDetails.password, // 🔴 Hash before saving in real-world apps
+            password: hashedPassword,
             role: "user",
             state: userDetails.state,
             city: userDetails.city,
@@ -54,8 +59,8 @@ exports.loginUser = async (req, res) => {
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ error: "Invalid credentials" });
 
-        // const isMatch = await bcrypt.compare(password, user.password);
-        // if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
 
         const userPayload = { id: user._id, name: user.username, role: user.role };
         const accessToken = generateAccessToken(userPayload);
