@@ -104,7 +104,12 @@ exports.refreshToken = (req, res) => {
 
 // ✅ Logout User
 exports.logout = (req, res) => {
-    const { token } = req.body;
-    refreshTokens = refreshTokens.filter(rt => rt !== token);
+    res.clearCookie("refreshToken", { 
+        httpOnly: true, 
+        secure: true,  // Ensure this is true if using HTTPS
+        sameSite: "Strict" ,
+        path:"/" // Required for cross-origin authentication
+    });
+    
     return res.status(200).json({ message: "Logged out successfully" });
 };
