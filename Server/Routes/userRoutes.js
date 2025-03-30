@@ -14,6 +14,6 @@ router.get('/profile',authMiddleware, userController.getUserProfile);
 router.get('/checkUsername', userController.checkUsername);
 
 
-router.get('/sendOTP',userController.sendOTP);
+router.post('/sendOTP',userController.sendOTP);
 
 module.exports = router;
