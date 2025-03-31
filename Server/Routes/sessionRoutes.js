@@ -1,18 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/Usermodel');
-
-const jwt = require('jsonwebtoken');
-const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
+const sessionController= require('../controllers/sessionController')
 
 router.use(express.json());
 
-router.get('/profile',authMiddleware, userController.getUserProfile);
+router.get('/getSessions',authMiddleware, sessionController.getSessions);
 
 router.get('/checkUsername', userController.checkUsername);
 
-
 router.post('/sendOTP',userController.sendOTP);
+
+
 
 module.exports = router;

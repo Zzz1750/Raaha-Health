@@ -6,12 +6,21 @@ import Footer from "./Footer";
 export default function LayoutWrapper({ children }) {
   const pathname = usePathname(); 
 
-  const excludedRoutes = ["/privacy_policy","/cancellation_policy","/tc","/login","/signup"];
+  const staticExcludedRoutes = ["/privacy_policy","/cancellation_policy","/tc","/login","/signup" ,"/session-summary"];
+
+   // Define regex patterns for dynamic routes
+   const dynamicExcludedRoutes = [/^\/session-summary\/.+$/];
+
+    // Check if pathname matches any static route
+  const isExcluded =
+  staticExcludedRoutes.includes(pathname) ||
+  dynamicExcludedRoutes.some((regex) => regex.test(pathname));
+
   return (
     <>
-      {!excludedRoutes.includes(pathname) && <Header />}
+      {!isExcluded && <Header />}
       <main className="flex-grow p-6">{children}</main>
-      {!excludedRoutes.includes(pathname) && <Footer />}
+      {!isExcluded && <Footer />}
     </>
   );
 }

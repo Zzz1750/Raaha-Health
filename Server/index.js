@@ -18,6 +18,7 @@ app.use(cors({
 
 app.use("/Auth" , require("./Routes/authRoutes"));
 app.use("/User" , require("./Routes/userRoutes"));
+app.use("/Doctor" , require("./Routes/doctorRoutes"));
 // app.use("/User/Login" , require("./Routes/user_routes/login"));
 app.get("/", async (req, res) => {
     res.send("Hello, World!");
