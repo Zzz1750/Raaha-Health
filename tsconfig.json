@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx", 
-    "src/middleware.ts"  ],
+    "src/middleware.ts", "src/app/specialist/page.js"  ],
   "exclude": [
     "node_modules"
   ]
