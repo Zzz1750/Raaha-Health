@@ -11,5 +11,6 @@ router.get('/getDoctorDetails', doctorController.getDoctorById);
 
 router.get('/getAllDoctors', doctorController.getDoctors);
 
+router.get('/getSlotsbyID', doctorController.getSlotsbyID)
 
 module.exports = router;

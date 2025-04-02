@@ -1,5 +1,5 @@
 const Doctor = require("../models/Doctormodel");
-
+const DSlots = require("../models/DoctorSlotmodel")
 // Create a new doctor
 exports.createDoctor = async (req, res) => {
     try {
@@ -53,3 +53,15 @@ exports.deleteDoctor = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.getSlotsbyID = async(req, res)=>{
+    try{
+        const doctorID  = req.query.ID
+        const slots = await DSlots.find({ doctorId: doctorID})
+        if(!slots)return res.status(404).json({error: "No slots found for this doctor on this date"});
+        res.status(200).json(slots);
+    }
+    catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}

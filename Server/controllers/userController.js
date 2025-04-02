@@ -1,8 +1,19 @@
 const User = require('../models/Usermodel');
 const messageController = require('./messageController')
+
 // ✅ User Profile (Protected Route)
-exports.getUserProfile = (req, res) => {
-    res.json({ message: "Welcome to your profile", user: req.user });
+exports.getUserDetails = async(req, res) => {
+    const userID = req.query.ID
+    try {
+        console.log(userID)
+        const user =  await User.findById({_id: userID},{ phone: 1, username: 1, email: 1, _id: 0 });
+        if(!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({message: "Internal Errorrs"})   
+    }
 };
 
 // 🔹 Logout (Invalidate Refresh Token)

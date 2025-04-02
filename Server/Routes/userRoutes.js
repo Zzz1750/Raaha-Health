@@ -8,7 +8,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 router.use(express.json());
 
-router.get('/profile',authMiddleware, userController.getUserProfile);
+router.get('/getUserDetails',authMiddleware, userController.getUserDetails);
 
 router.get('/checkUsername', userController.checkUsername);
 
