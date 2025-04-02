@@ -8,12 +8,11 @@ export function formattedSlots(slotDetails) {
         const dateObj = new Date(item.date);
         const day = dateObj.getDate();
         const month = dateObj.toLocaleString("en-US", { month: "short" }); // Short month format
-        const formattedDate = `${day} ${month}`;
-
+        const year = dateObj.getFullYear();
+        const formattedDate = `${day} ${month} ${year}`;
         acc[formattedDate] = item.slots; // Assign slots to formatted date key
         return acc; // Must return acc in reduce
     }, {}); // Initial value is an empty object
 
-    console.log("Sorted Slots:", sortedSlots);
     return sortedSlots;
 }

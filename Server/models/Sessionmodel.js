@@ -7,6 +7,7 @@ const Sessionschema = new Schema ({
     sessionDate:{type: Date , required:true},
     sessionTime:{type: String , required:true},
     sessionMode:{type: String , enum:["offline" , "online"] , required: true},
+    modeType:{type:String  },
     price:{type: Number }
 },{ timestamps: true });
 

@@ -7,32 +7,27 @@ import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { getDoctorDetails ,getSlotsbyID } from "../../../SERVICE/doctorService";
 import { getUserDetails } from '../../../SERVICE/userService';
-import {formattedDates} from '../components/dateFormatter';
+import {formattedDates ,reFormateDate} from '../components/dateFormatter';
 import {formattedSlots} from '../components/slotFormatter';
+import { createSession } from "../../../SERVICE/sessionService";
 export default function SessionSummary() {
 
   const { doctorID } = useParams();
-
+  const router = useRouter();
   const [doctorDetails,setDoctor] = useState();
   const [sessionMode, setSessionMode] = useState("online");
   const [modeType, setModeType] = useState("video");
   const [selectedDate, setSelectedDate] = useState("4 Mar");
-  const [selectedTime, setSelectedTime] = useState("");
+  const [selectedTime, setSelectedTime] = useState();
   const [slotDetails , setSlots] = useState();
   const token = useSelector((state) => state.auth.accessToken)
   const USER = useSelector((state) => state.auth.user)
 
   const [UserDetails , setUser] = useState()
   const dates = slotDetails? formattedDates(slotDetails) : [];
-  const slots = slotDetails? formattedSlots(slotDetails , dates) : {};
-  const newslots = {
-    "1 Apr": ["4:00 - 4:50 pm", "5:00 - 5:50 pm", "6:00 - 6:50 pm", "7:00 - 7:50 pm", "8:00 - 8:50 pm"],
-    "5 Mar": ["4:00 - 4:50 pm", "5:00 - 5:50 pm", "6:00 - 6:50 pm"],
-    "6 Apr": ["4:00 - 4:50 pm", "5:00 - 5:50 pm"],
-    "7 Mar": ["4:00 - 4:50 pm"]
-  };
-  
-  console.log(newslots)
+  const slots = slotDetails? formattedSlots(slotDetails) : {};
+
+  console.log("doctorID : " , doctorID)
   useEffect(()=>{
     const fetchDoctor = async () => {
       try {
@@ -67,8 +62,33 @@ export default function SessionSummary() {
       fetchDoctor();
       fetchSlots();
     };
-  }, [doctorID, token ,USER]);
+  }, [doctorID, token ,USER?.id]);
 
+
+  const handlePayment = () => {
+
+  }
+
+  const handleSessionUpdate = async() => {
+    const reformattedDate = reFormateDate(selectedDate);
+    console.log(reformattedDate)
+    const newSesssion = {
+      doctorID:doctorID,
+      userID:USER?.id,
+      sessionDate:new Date(reformattedDate),
+      sessionTime:selectedTime,
+      sessionMode:sessionMode,
+      modeType: modeType,
+      price:doctorDetails?.price
+    }
+    try{
+      const data = await createSession(newSesssion , token);
+      console.log(data);
+    }
+    catch(err){
+      console.error(err)
+    }
+  }
   return (
     <div className="flex flex-col md:flex-row gap-6 p-6 bg-gray-100">
       {/* Left Section */}
@@ -135,7 +155,7 @@ export default function SessionSummary() {
         <div className="grid grid-cols-2 gap-2 mb-6">
           {slots[selectedDate]?.map((time) => (
             <button
-              key={time}
+              key={time.startTime}
               onClick={() => setSelectedTime(time)}
               className={`px-4 py-2 rounded-md border ${selectedTime === time ? "bg-teal-500 text-white" : "border-gray-300"}`}
             >
@@ -179,14 +199,14 @@ export default function SessionSummary() {
             </div>
             <div className="flex justify-between font-semibold text-lg">
               <span>Total Bill</span>
-              <span>₹{doctorDetails?.price + 10}.00</span>
+              <span>₹{(doctorDetails?.price ?? 0)+ 10}.00</span>
             </div>
           </div>
         </div>
 
         {/* Proceed Button */}
         <button
-          onClick={() => router.push("/payment")}
+          onClick={handleSessionUpdate}
           className="w-full bg-teal-500 text-white py-2 rounded-md hover:bg-teal-600"
         >
           Proceed To Pay

@@ -5,11 +5,13 @@ const sessionController= require('../controllers/sessionController')
 
 router.use(express.json());
 
-router.get('/getSessions',authMiddleware, sessionController.getSessions);
+router.use(authMiddleware)
 
-router.get('/checkUsername', userController.checkUsername);
+router.get('/getSessions', sessionController.getSessions);
 
-router.post('/sendOTP',userController.sendOTP);
+router.post('/createSession', sessionController.bookSession);
+
+router.post('/cancelSession',sessionController.cancelSession);
 
 
 
