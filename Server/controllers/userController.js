@@ -1,5 +1,5 @@
 const User = require('../models/Usermodel');
-
+const messageController = require('./messageController')
 // ✅ User Profile (Protected Route)
 exports.getUserProfile = (req, res) => {
     res.json({ message: "Welcome to your profile", user: req.user });
@@ -28,9 +28,10 @@ exports.checkUsername = async (req, res) => {
 
 // ✅ Send OTP 
 exports.sendOTP = async (req, res) => {
-    const { email } = req.query;
+    const { email } = req.body;
     if (!email) {
         return res.status(400).json({ error: "Email is required" });
     }
+    messageController.sendOTPMail(email);
     return res.status(200).json({ message: "OTP sent successfully!" });
 };
