@@ -29,7 +29,7 @@ function AuthLoader({ children }) {
   const pathname = usePathname();
   const auth = useSelector((state) => state.auth);
 
-  const protectedRoutes= ['/join',"/dashboard", "/profile", "/appointments", "/messages", "/settings"];
+  const protectedRoutes= ["/dashboard", "/profile", "/appointments", "/messages", "/settings"];
 
   useEffect(()=>{
 
