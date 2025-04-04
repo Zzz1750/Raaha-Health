@@ -6,12 +6,31 @@ import ProfileComponent from './components/main';
 import PersonalInfoComponent from './components/info';
 import SessionHistoryComponent from './components/history';
 import PersonalAddressComponent from './components/address';
+import {getUserDetails} from '../../SERVICE/userService';
+import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('Profile');
   const [isMobile, setIsMobile] = useState(false);
-
+  const [userDetails, setUserDetails] = useState(null);
+  const token = useSelector((state) => state.auth.accessToken);
+  const userID = useSelector((state) => state?.auth?.user?.id);
+  const fetchUserDetails = async () => {
+    try {
+      const response = await getUserDetails(userID , token);
+      if (response) {
+        setUserDetails(response);
+      }
+      console.log('User Details:', response);
+    } 
+    catch (error) {
+      console.error('Error fetching user details:', error);
+    }
+  }
   useEffect(() => {
+    if(userID && token) {
+      fetchUserDetails();
+    }
 
     if (typeof window !== 'undefined') {
       const checkMobile = () => {
@@ -26,7 +45,7 @@ const Dashboard = () => {
    
       return () => window.removeEventListener('resize', checkMobile);
     }
-  }, []);
+  }, [userID, token]);
 
   return (
     <div className="flex flex-col sm:flex-row bg-white">
@@ -37,14 +56,14 @@ const Dashboard = () => {
           
           <main className="flex-grow p-4">
             <div className="flex flex-col space-y-4 max-w-4xl mx-auto">
-              <ProfileComponent />
+              <ProfileComponent userDetails={userDetails}/>
               
               <div className="bg-white rounded-lg shadow p-4 border border-gray-600">
-                <PersonalInfoComponent />
+                <PersonalInfoComponent userDetails={userDetails}/>
               </div>
               
               <div className="bg-white rounded-lg shadow p-4 border border-gray-600">
-                <PersonalAddressComponent />
+                <PersonalAddressComponent userDetails={userDetails}/>
               </div>
               
               <div className="bg-white rounded-lg shadow p-4 border border-gray-600">
@@ -62,14 +81,14 @@ const Dashboard = () => {
           
           <main className="ml-64 flex-grow p-10">
             <div className="flex flex-col space-y-6 max-w-4xl mx-auto">
-              <ProfileComponent />
+              <ProfileComponent userDetails={userDetails} />
               
               <div className="bg-white rounded-lg shadow p-6 border border-gray-600">
-                <PersonalInfoComponent />
+                <PersonalInfoComponent userDetails={userDetails}/>
               </div>
               
               <div className="bg-white rounded-lg shadow p-6 border border-gray-600">
-                <PersonalAddressComponent />
+                <PersonalAddressComponent userDetails={userDetails}/>
               </div>
               
               <div className="bg-white rounded-lg shadow p-6 border border-gray-600">

@@ -1,14 +1,15 @@
 import React from 'react';
 import Image from 'next/image';
 
-const PersonalInfoComponent = () => {
+const PersonalInfoComponent = ({userDetails}) => {
+  const dob = new Date(userDetails?.dob).toLocaleDateString();
   const userData = {
-    firstName: 'Antony',
-    lastName: 'Zharon',
-    email: 'antony.zharon@gmail.com',
-    phoneNumber: '8455412301',
-    sex: 'Male',
-    dateOfBirth: '18-10-2004'
+    firstName: `${userDetails?.username}`,
+    lastName: '',
+    email:`${userDetails?.email}`,
+    phoneNumber: `${userDetails?.phone}`,
+    sex: `${userDetails?.gender}`,
+    dateOfBirth: `${dob}`
   };
 
   return (
