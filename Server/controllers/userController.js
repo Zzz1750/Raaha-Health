@@ -6,7 +6,7 @@ exports.getUserDetails = async(req, res) => {
     const userID = req.query.ID
     try {
         console.log(userID)
-        const user =  await User.findById({_id: userID},{ phone: 1, username: 1, email: 1, _id: 0 });
+        const user =  await User.findById({_id: userID},{ password: 0 ,updatedAt: 0, __v: 0 });
         if(!user) {
             return res.status(404).json({ message: "User not found" });
         }

@@ -1,12 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
 
-const PersonalAddressComponent = () => {
+const PersonalAddressComponent = ({userDetails}) => {
   const userData = {
-    country: 'India',
-    state: 'Kerala',
-    district: 'Kozhikode',
-    pincode: '673006',
+    country: `India`,
+    state:`${userDetails?.state}`,
+    district: `${userDetails?.city}`,
+    pincode: `${userDetails?.pincode}`,
   };
 
   return (

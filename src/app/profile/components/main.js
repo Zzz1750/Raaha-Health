@@ -1,10 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 
-const ProfileComponent = () => {
+const ProfileComponent = ({userDetails}) => {
+  console.log('User Details:', userDetails);
   const user = {
-    name: 'Antony Zharon',
-    email: 'antony.zharon@gmail.com',
+    name: `${userDetails?.username}`,
+    email: `${userDetails?.email}`,
     profileImage: '/images/profile.png' 
   };
 
