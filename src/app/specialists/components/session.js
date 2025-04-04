@@ -1,26 +1,23 @@
 // components/SessionBooking.jsx
-import { useState } from 'react';
+'use client'
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import {formattedSlots} from '../components/slotFormatter';
 
-export default function SessionsComponent() {
+export default function SessionsComponent({doctorDetails,Slots}) {
   const [sessionType, setSessionType] = useState('Online');
-  const [selectedDate, setSelectedDate] = useState('4 Mar');
+  const [selectedDate, setSelectedDate] = useState();
   const [selectedTime, setSelectedTime] = useState(null);
   
-  const dates = [
-    { date: '4 Mar', slots: 5 },
-    { date: '5 Mar', slots: 10 },
-    { date: '6 Mar', slots: 9 },
-    { date: '7 Mar', slots: 10 },
-  ];
   
-  const eveningTimes = ['4:00-4:50 pm', '5:00-5:50 pm', '6:00-6:50 pm'];
-  const nightTimes = ['7:00-7:50 pm', '8:00-8:50 pm'];
+  const SortedSlots = Slots? formattedSlots(Slots) : [];
+ 
   
+
   const clinicDetails = {
-    name: 'HSR Clinic',
-    address: '1167, Queens Rd, below Focus Diagnostic Center, Sector 6, HSR Layout, Bengaluru, Karnataka',
-    pincode: '560102, India'
+    name: `${doctorDetails?.address.clinicName}`,
+    address: `${doctorDetails?.address.area}, ${doctorDetails?.address.building}, ${doctorDetails?.address.city}` ,
+    pincode: `${doctorDetails?.address.pincode}, India`
   };
 
   return (
@@ -72,7 +69,7 @@ export default function SessionsComponent() {
                 {clinicDetails.pincode}
               </p>
               <a 
-                href="https://maps.google.com" 
+                href={`${doctorDetails?.address.clinicLocation}`}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-sm text-[#00B2FF]"
@@ -99,16 +96,16 @@ export default function SessionsComponent() {
           </button>
           
           <div className="flex justify-between items-center space-x-4 md:space-x-8 overflow-x-auto py-2 md:py-4 px-6 md:px-8">
-            {dates.map((item) => (
+            {Object.entries(SortedSlots).map(([item , slots]) => (
               <button
-                key={item.date}
-                onClick={() => setSelectedDate(item.date)}
+                key={item}
+                onClick={() => setSelectedDate(item)}
                 className={`flex flex-col items-center justify-center border border-[#D9D9D9] min-w-[4.5rem] md:min-w-20 p-2 rounded-md ${
-                  selectedDate === item.date ? 'bg-[#10909D]/52' : 'bg-white'
+                  selectedDate === item ? 'bg-[#10909D]/52' : 'bg-white'
                 }`}
               >
-                <span className="font-bold text-sm md:text-base text-black">{item.date}</span>
-                <span className="text-[10px] md:text-xs text-black">{item.slots} slots</span>
+                <span className="font-bold text-sm md:text-base text-black">{item}</span>
+                <span className="text-[10px] md:text-xs text-black">{slots.length}</span>
               </button>
             ))}
           </div>
@@ -120,37 +117,22 @@ export default function SessionsComponent() {
         
         {/* Time Selection */}
         <div className="mb-6">
-          <h3 className="text-sm font-semibold text-[#023C3D] mb-4 md:mb-8 mt-4 md:mt-8">Evening</h3>
           <div className="flex flex-wrap gap-2 md:gap-4 mb-4 md:space-x-8">
-            {eveningTimes.map((time) => (
+            {SortedSlots[selectedDate]?.map((time) => (
               <button
-                key={time}
+                key={time.startTime}
                 onClick={() => setSelectedTime(time)}
                 className={`px-2 md:px-3 py-1 md:py-2 border rounded-md text-xs md:text-sm text-[#023C3D] ${
                   selectedTime === time ? 'bg-[#B8DEE2] border-[#B8DEE2]' : 'bg-white border-[#D9D9D9]'
                 }`}
               >
-                {time}
+                {time.startTime} - {time.endTime}
               </button>
             ))}
           </div>
-          
-          <h3 className="text-sm font-semibold text-[#023C3D] mb-4 md:mb-8 mt-8 md:mt-12">Night</h3>
-          <div className="flex flex-wrap gap-2 md:gap-4 md:space-x-8">
-            {nightTimes.map((time) => (
-              <button
-                key={time}
-                onClick={() => setSelectedTime(time)}
-                className={`px-2 md:px-3 py-1 md:py-2 border rounded-md text-xs md:text-sm text-[#023C3D] ${
-                  selectedTime === time ? 'bg-[#B8DEE2] border-[#B8DEE2]' : 'bg-white border-[#D9D9D9]'
-                }`}
-              >
-                {time}
-              </button>
-            ))}
           </div>
         </div>
       </div>
-    </div>
+
   );
 }
