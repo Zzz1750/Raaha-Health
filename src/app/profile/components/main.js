@@ -2,7 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 
 const ProfileComponent = ({userDetails}) => {
-  console.log('User Details:', userDetails);
   const user = {
     name: `${userDetails?.username}`,
     email: `${userDetails?.email}`,

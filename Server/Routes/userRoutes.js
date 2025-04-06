@@ -12,6 +12,9 @@ router.get('/getUserDetails',authMiddleware, userController.getUserDetails);
 
 router.get('/checkUsername', userController.checkUsername);
 
+router.put('/updateUserDetails',authMiddleware, userController.updatePersonalInfo);
+
+router.put('/updateUserAddress',authMiddleware, userController.updatePersonalAddress);
 
 router.post('/sendOTP',userController.sendOTP);
 
