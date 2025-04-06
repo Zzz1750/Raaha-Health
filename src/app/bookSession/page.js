@@ -21,38 +21,38 @@ export default function BookSession() {
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <h1 className="text-4xl font-bold text-[#043c3c] mb-8">Book Session</h1>
         
-        <div className="flex flex-col lg:flex-row gap-0 lg:gap-8">
-          {/* Left Column - Calendar & Session */}
-          <div className="w-full lg:w-[600px] xl:w-[650px] space-y-8">
-            <div>
-              <h2 className="text-xl font-medium text-[#043c3c] mb-4">Pick the date</h2>
-              <Calendar onDateSelect={setSelectedDate} />
-            </div>
-            
-            <div>
-              <h2 className="text-xl font-medium text-[#043c3c] mb-4">Pick session</h2>
-              <SessionTime selectedDate={selectedDate} />
-            </div>
+        {/* Top Row - Calendar and Session */}
+        <div className="flex flex-col lg:flex-row gap-8 mb-8">
+          {/* Left Column - Calendar */}
+          <div className="w-full lg:w-1/2">
+            <h2 className="text-xl font-medium text-[#043c3c] mb-4">Pick the date</h2>
+            <Calendar onDateSelect={setSelectedDate} />
           </div>
+          
+          {/* Right Column - Session */}
+          <div className="w-full lg:w-1/2">
+            <h2 className="text-xl font-medium text-[#043c3c] mb-4">Pick session</h2>
+            <SessionTime selectedDate={selectedDate} />
+          </div>
+        </div>
 
-          {/* Right Column - Doctor Panel */}
-          <div className="w-full lg:flex-1 mt-8 lg:mt-0">
-            <div className="h-full">
-              <h2 className="text-2xl font-bold text-[#043c3c] mb-4">Find Your Doctor</h2>
-              
-              <div className="mb-6">
-                <input
-                  type="text"
-                  placeholder="Search doctors by name..."
-                  className="w-full bg-white p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#043c3c]"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
+        {/* Bottom Row - Doctor Panel */}
+        <div className="w-full">
+          <div className="max-w-4xl mx-auto"> {/* Centered container with max width */}
+            <h2 className="text-2xl font-bold text-[#043c3c] mb-4">Find Your Doctor</h2>
+            
+            <div className="mb-6">
+              <input
+                type="text"
+                placeholder="Search doctors by name..."
+                className="w-full bg-white p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#043c3c]"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
 
-              <div className="h-[calc(100vh-300px)] overflow-y-auto">
-                <DoctorPanel searchQuery={searchQuery} />
-              </div>
+            <div className="h-[calc(100vh-300px)] overflow-y-auto">
+              <DoctorPanel searchQuery={searchQuery} />
             </div>
           </div>
         </div>
