@@ -1,10 +1,10 @@
 "use client"
 import { useState , useEffect} from "react";
-import ProfileCard from '../components/header';
-import ProfileHeaderTabs from '../components/hero';
-import QualificationsComponent from '../components/qualification';
-import AboutComponent from "../components/about";
-import SessionsComponent from "../components/session";
+import ProfileCard from './components/header';
+import ProfileHeaderTabs from './components/hero';
+import QualificationsComponent from './components/qualification';
+import AboutComponent from "./components/about";
+import SessionsComponent from "./components/session";
 import {getDoctorDetails , getSlotsbyID} from "../../../SERVICE/doctorService"
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";

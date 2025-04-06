@@ -9,7 +9,7 @@ router.use(authMiddleware)
 
 router.get('/getDoctorDetails', doctorController.getDoctorById);
 
-router.get('/getAllDoctors', doctorController.getDoctors);
+router.get('/getAllDoctors', doctorController.getAllDoctors);
 
 router.get('/getSlotsbyID', doctorController.getSlotsbyID)
 

@@ -2,7 +2,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import {formattedSlots} from '../components/slotFormatter';
+import {formattedSlots} from './slotFormatter';
 
 export default function SessionsComponent({doctorDetails,Slots}) {
   const [sessionType, setSessionType] = useState('Online');
