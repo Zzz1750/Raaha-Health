@@ -19,6 +19,7 @@ const DoctorSchema = new Schema({
     img:{type: String , default: ""},
     about:{type: String , default: "No description Available"},
     jobExperience:{type:[String] , default: ["Counselor at Raaha"]},
+    sessionDuration:{type: Number , default: 30}, // in minutes
     sessionAvailability:{type:[String] ,enum: ["Online", "Offline"], default: ["Online"]},
     experience: {type: Number, default: 0},
     address: {

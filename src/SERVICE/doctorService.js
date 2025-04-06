@@ -42,9 +42,9 @@ export const getSlotsbyID = (async (doctorID, token) => {
   }
 });
 
-export const getDoctorSlotsByDate = async(doctorID, token , date) =>{
+export const getAllDoctors = (async (token) => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/Doctor/getDoctorSlotsByDate?ID=${doctorID}&date=${date}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/Doctor/getAllDoctors`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -53,9 +53,12 @@ export const getDoctorSlotsByDate = async(doctorID, token , date) =>{
       credentials:'include',
     })      
     if (!response.ok) {
-      throw new Error("Failed to fetch slots");
+      throw new Error("Failed to fetch doctor details");
     }
+    const data = await response.json();
+    return data;
+
   } catch (error) {
     console.log(error)
-  }
-}
+  } 
+});
