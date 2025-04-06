@@ -119,7 +119,7 @@ const Filter = () => {
         className="flex items-center justify-center space-x-2 px-4 sm:px-6 py-2 sm:py-2.5 bg-[#13A4A0] border border-[#13A4A0] rounded-full shadow-sm hover:bg-opacity-80"
       >
         <span className="text-white font-medium">Filters</span>
-        <img src="/images/specialist/filter button .png" alt="Filter Icon" className="w-4 h-4" />
+        <Image src="/images/specialist/filter_button.png" alt="Filter Icon" className="w-4 h-4" />
       </button>
 
       {isOpen && (
