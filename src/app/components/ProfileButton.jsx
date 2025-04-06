@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../../store/slices/authSlice";
-
+import Image from "next/image";
+import DefaultProfilePic from "../../../public/images/Profile/profile 2.png"
 export default function ProfileButton(){
     const [user , setUser] = useState("");
     const [dropdown , setDropdown] = useState(false)
@@ -34,7 +35,8 @@ export default function ProfileButton(){
             console.log(error)
         }
     }
-    return <div className="">
+    return <div className="flex gap-5 ">
+        <div className="border-l border-gray-300 h-full pl-4"></div>
             <button className="text-white bg-transparent hover:text-gray-300    font-medium rounded-lg text-sm  text-center inline-flex items-center" 
            onClick={() => setDropdown(!dropdown)}>
                 {user.name}
@@ -54,13 +56,13 @@ export default function ProfileButton(){
           />
         </svg>
         </button>
-
+        <div><Image width={20} height={15} src={DefaultProfilePic} alt="" /></div>
     {/* Drop Down */}
 {   dropdown &&
-            <div className="absolute bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <div className="absolute bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600 translate-y-10 z-1">
                 <ul>
                     <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                        <a href="/profile" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                     </li>
                     <li>
                         <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>

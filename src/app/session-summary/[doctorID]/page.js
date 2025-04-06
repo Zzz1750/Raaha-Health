@@ -10,6 +10,7 @@ import { getUserDetails } from '../../../SERVICE/userService';
 import {formattedDates ,reFormateDate} from '../components/dateFormatter';
 import {formattedSlots} from '../components/slotFormatter';
 import { createSession } from "../../../SERVICE/sessionService";
+
 export default function SessionSummary() {
 
   const { doctorID } = useParams();
