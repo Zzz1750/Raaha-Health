@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import Calendar from "./components/Calendar";
 import SessionTime from "./components/SessionTime";
 import DoctorPanel from "./components/DoctorPanel";
 import { Inter } from 'next/font/google';
-
+import {getAllDoctors} from "../../SERVICE/doctorService"
+import { useSelector } from "react-redux";
 // Initialize Inter font
 const inter = Inter({ 
   subsets: ['latin'],
@@ -15,6 +16,25 @@ const inter = Inter({
 export default function BookSession() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const token = useSelector((state) => state.auth.accessToken);
+  const [doctors, setDoctors] = useState([]);
+  const fetchDoctors= async() => {
+    try {
+    const response = await getAllDoctors(token)
+    if(response){
+      setDoctors(response);
+    }
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      
+    }
+  };
+
+  useEffect(() => {
+    if(token ){
+      fetchDoctors( );
+    }
+  },[token])
 
   return (
     <div className={`min-h-screen bg-[#f3f6fb] ${inter.variable} font-sans`}>
@@ -52,7 +72,7 @@ export default function BookSession() {
             </div>
 
             <div className="h-[calc(100vh-300px)] overflow-y-auto">
-              <DoctorPanel searchQuery={searchQuery} />
+              <DoctorPanel searchQuery={searchQuery} doctors={doctors}/>
             </div>
           </div>
         </div>
