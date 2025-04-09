@@ -22,7 +22,7 @@ export const TherapistCard = ({doctor}) => {
               priority
             />
             <div className="absolute bottom-0 left-0 right-0">
-              <button className="w-full text-xs text-white bg-[#545454] hover:bg-black/70 transition-colors py-2 sm:py-2.5 text-center uppercase tracking-wide font-medium">
+              <button onClick={() => {router.push(`/specialists/${doctor._id}`)}} className="w-full text-xs text-white bg-[#545454] hover:bg-black/70 transition-colors py-2 sm:py-2.5 text-center uppercase tracking-wide font-medium">
                 View Profile
               </button>
             </div>
@@ -96,7 +96,7 @@ export const TherapistCard = ({doctor}) => {
             <p className="text-lg sm:text-xl font-bold">₹ {doctor.price}</p>
             <p className="text-xs sm:text-sm text-gray-600">{doctor.sessionDuration} min session</p>
           </div>
-          <button onClick={() => {router.push(`/specialists/${doctor._id}`)}} className="bg-[#023C3D] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-sm hover:bg-[#108F8B] transition-colors">
+          <button onClick={() => {router.push(`/session-summary/${doctor._id}`)}} className="bg-[#023C3D] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-sm hover:bg-[#108F8B] transition-colors">
             Book session
           </button>
         </div>

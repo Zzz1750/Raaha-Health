@@ -13,7 +13,7 @@ const inter = Inter({
 
 export default function Calendar({ onDateSelect }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const today = new Date();
+  const today = format(new Date(), "yyyy-MM-dd"); 
   const [selectedDate, setSelectedDate] = useState(today);
 
   // Set today as default selected date
@@ -44,7 +44,7 @@ export default function Calendar({ onDateSelect }) {
 
     const selectedDateObj = next7Days.find(d => d.dateString === formattedDay)?.dateObj;
     setSelectedDate(selectedDateObj);
-    onDateSelect(selectedDateObj);
+    onDateSelect(formattedDay);
   };
 
   return (

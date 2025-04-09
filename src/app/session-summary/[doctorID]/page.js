@@ -27,8 +27,11 @@ export default function SessionSummary() {
   const [UserDetails , setUser] = useState()
   const dates = slotDetails? formattedDates(slotDetails) : [];
   const slots = slotDetails? formattedSlots(slotDetails) : {};
-
-  console.log("doctorID : " , doctorID)
+  const searchParams = useSearchParams();
+  const passedMode = searchParams.get("mode");
+  const passedDate = searchParams.get("date");
+  const passedTime = searchParams.get("time");
+  console.log("mode " , passedMode , "date" , passedDate , "time" , passedTime)
   useEffect(()=>{
     const fetchDoctor = async () => {
       try {

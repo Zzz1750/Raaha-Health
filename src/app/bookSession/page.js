@@ -4,7 +4,7 @@ import Calendar from "./components/Calendar";
 import SessionTime from "./components/SessionTime";
 import DoctorPanel from "./components/DoctorPanel";
 import { Inter } from 'next/font/google';
-import {getAllDoctors} from "../../SERVICE/doctorService"
+import {getAllDoctors, getDoctorsByDate, getDoctorsByDate_and_slot} from "../../SERVICE/doctorService"
 import { useSelector } from "react-redux";
 // Initialize Inter font
 const inter = Inter({ 
@@ -15,15 +15,39 @@ const inter = Inter({
 
 export default function BookSession() {
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+
   const token = useSelector((state) => state.auth.accessToken);
   const [doctors, setDoctors] = useState([]);
+  
   const fetchDoctors= async() => {
     try {
-    const response = await getAllDoctors(token)
-    if(response){
-      setDoctors(response);
-    }
+      let response;
+      if (selectedDate && selectedTime) {
+        // Most specific case: Date + Time
+        response = await getDoctorsByDate_and_slot(
+          selectedDate,
+          selectedTime?.toString().split("-")[0],
+          token
+        );
+        if (response) {
+          setDoctors(response?.map((doc) => doc.doctorId));
+        }
+      } else if (selectedDate) {
+        //  Only date is selected
+        response = await getDoctorsByDate(selectedDate, token);
+        if (response) {
+          setDoctors(response?.map((doc) => doc.doctorId));
+        }
+      } else {
+        // No filters — get all doctors
+        response = await getAllDoctors(token);
+        if (response) {
+          setDoctors(response);
+        }
+      }
+
     } catch (error) {
       console.error("Error fetching doctors:", error);
       
@@ -31,10 +55,10 @@ export default function BookSession() {
   };
 
   useEffect(() => {
-    if(token ){
+    if(token){
       fetchDoctors( );
     }
-  },[token])
+  },[token , selectedDate, selectedTime]);
 
   return (
     <div className={`min-h-screen bg-[#f3f6fb] ${inter.variable} font-sans`}>
@@ -52,7 +76,7 @@ export default function BookSession() {
           {/* Right Column - Session */}
           <div className="w-full lg:w-1/2">
             <h2 className="text-xl font-medium text-[#043c3c] mb-4">Pick session</h2>
-            <SessionTime selectedDate={selectedDate} />
+            <SessionTime selectedDate={selectedDate} onTimeSelect={setSelectedTime}/>
           </div>
         </div>
 
@@ -72,7 +96,7 @@ export default function BookSession() {
             </div>
 
             <div className="h-[calc(100vh-300px)] overflow-y-auto">
-              <DoctorPanel searchQuery={searchQuery} doctors={doctors}/>
+              <DoctorPanel searchQuery={searchQuery} doctors={doctors}  selectedDate={selectedDate} selectedTime={selectedTime} />
             </div>
           </div>
         </div>

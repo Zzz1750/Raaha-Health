@@ -66,3 +66,32 @@ exports.getAllDoctors = async(req, res)=>{
         res.status(500).json({ error: error.message });
     }
 }
+
+exports.getDoctorsByDate = async(req, res)=>{
+    try{
+        const date = req.query.date
+        const selectedDate =new Date(date)
+        console.log(selectedDate)
+        const doctors = await DSlots.find({ date:   { $gte: selectedDate, $lte: selectedDate  }}).populate("doctorId")
+        console.log("CONTROLLERS ",doctors)
+        if(!doctors)return res.status(404).json({error: "No doctors found"});
+        res.status(200).json(doctors);
+    }
+    catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.getDoctorsByDate_and_slot= async(req, res)=>{
+    try{
+        const date = req.query.date
+        const startTime = req.query.time
+        const selectedDate =new Date(date)
+        const doctors = await DSlots.find({ date: { $gte: selectedDate, $lte: selectedDate  } , slots: { $elemMatch: { startTime: startTime }}}).populate("doctorId");
+        if(!doctors)return res.status(404).json({error: "No doctors found"});
+        res.status(200).json(doctors);
+    }
+    catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}

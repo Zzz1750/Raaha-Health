@@ -10,11 +10,12 @@ const inter = Inter({
   variable: '--font-inter'
 });
 
-export default function DoctorPanel({ searchQuery , doctors}) {
+export default function DoctorPanel({ searchQuery , doctors , selectedDate , selectedTime }) {
   const router = useRouter();
   const filteredDoctors = doctors?.filter(doctor =>
-    doctor.firstname.toLowerCase().includes(searchQuery.toLowerCase())
+    doctor?.firstname?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  console.log("Doctor PANEL : ",doctors, selectedDate , selectedTime)
 
   return (
     <div className={`space-y-4 ${inter.variable} font-sans`}>
@@ -171,7 +172,7 @@ export default function DoctorPanel({ searchQuery , doctors}) {
                 <p className="font-bold">₹{doctor.price}</p>
                 <p className="text-xs text-gray-600">{doctor.sessionDuration}</p>
               </div>
-              <button onClick={()=> {router.push(`/session-summary/${doctor._id}`)}} className="bg-teal-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-teal-700 transition">
+              <button onClick={()=> {router.push(`/session-summary/${doctor._id}?date="${selectedDate}&time="${selectedTime}"`)}} className="bg-teal-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-teal-700 transition">
                 Book session
               </button>
             </div>
