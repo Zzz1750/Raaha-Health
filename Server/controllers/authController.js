@@ -1,5 +1,7 @@
+
 const jwt = require('jsonwebtoken');
 const User = require('../models/Usermodel'); 
+const bcrypt = require ('bcrypt');
 
 const generateAccessToken = (user) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
@@ -22,11 +24,15 @@ exports.addUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: "Email already exists" });
         }
+        const salt=await bcrypt.genSalt(10);
+        console.log("Passweord: ", userDetails.password ,"Type of Password: ",typeof userDetails.password, "salt: " , salt)
+        const hashedPassword = await bcrypt.hash(userDetails.password, salt);
+
         const newUser = new User({
             username: userDetails.name,
             email: userDetails.email,
             phone: userDetails.phone,
-            password: userDetails.password, // 🔴 Hash before saving in real-world apps
+            password: hashedPassword,
             role: "user",
             state: userDetails.state,
             city: userDetails.city,
@@ -53,10 +59,10 @@ exports.loginUser = async (req, res) => {
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ error: "Invalid credentials" });
 
-        // const isMatch = await bcrypt.compare(password, user.password);
-        // if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
 
-        const userPayload = { id: user._id, name: user.name, role: user.role };
+        const userPayload = { id: user._id, name: user.username, role: user.role };
         const accessToken = generateAccessToken(userPayload);
         const refreshToken = await generateRefreshToken(userPayload);
 
@@ -64,9 +70,9 @@ exports.loginUser = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "Strict",
-            sameSite: "lax", // Important for cross-origin requests
+            secure: true,  // Set to 'true' in production (HTTPS)
             path: "/",
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days,
         });
 
         refreshTokens.push(refreshToken);
@@ -79,22 +85,31 @@ exports.loginUser = async (req, res) => {
 
 // ✅ Refresh Token
 exports.refreshToken = (req, res) => {
-    const { token } = req.body;
-
-    if (!token) return res.status(401).json({ error: "Refresh token required" });
-    if (!refreshTokens.includes(token)) return res.status(403).json({ error: "Invalid refresh token" });
-
-    jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err) return res.status(403).json({ error: "Invalid refresh token" });
-
-        const newAccessToken = generateAccessToken({ id: user.id, name: user.name, role: user.role });
-        return res.status(200).json({ accessToken: newAccessToken });
-    });
+    const refreshToken = req.cookies?.refreshToken;
+    if (!refreshToken) return res.status(401).json({ error: "Refresh token required" });
+    
+    try {
+        const decoded = jwt.verify(refreshToken , process.env.REFRESH_TOKEN_SECRET)
+       
+        const newAccessToken= jwt.sign(
+            { user: decoded },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: "15m" }
+        )
+        res.json({accessToken : newAccessToken})
+    } catch (error) {
+        return res.status(403).json({ message: "Forbidden: Invalid refresh token" });
+    }
 };
 
 // ✅ Logout User
 exports.logout = (req, res) => {
-    const { token } = req.body;
-    refreshTokens = refreshTokens.filter(rt => rt !== token);
+    res.clearCookie("refreshToken", { 
+        httpOnly: true, 
+        secure: true,  // Ensure this is true if using HTTPS
+        sameSite: "Strict" ,
+        path:"/" // Required for cross-origin authentication
+    });
+    
     return res.status(200).json({ message: "Logged out successfully" });
 };

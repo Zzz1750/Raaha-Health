@@ -64,7 +64,9 @@ export default function Footer() {
         <strong>Disclaimer:</strong> Raaha is not designed for handling emergencies, including abuse, severe mental health conditions, suicidal thoughts, or self-harm. Please seek professional help or contact emergency services in such cases. 
         Users must be 18 or older to access Raaha. Those aged 13-18 may use it only with parental or guardian consent. Raaha is not suitable for children under 13.
       </p>
-      <p className="text-center text-gray-400 text-xs mt-5">&copy; 2025 Raaha, Inc. All rights reserved. | <Link href="/privacy_policy" className="text-[#44735b] font-semibold opacity-75 hover:opacity-85">Privacy Policy</Link> | <Link href="#" className="text-[#44735b] font-semibold opacity-75 hover:opacity-85">CA Privacy Notice</Link> | <Link href="/tc" className="text-[#44735b] font-semibold opacity-75 hover:opacity-85">Terms of Use</Link></p>
+
+      <p className="text-center text-gray-400 text-xs mt-5">&copy; 2025 Raaha, Inc. All rights reserved. | Raaha, a venture of Aeternis Wellness Innovations LLP.</p>
+
     </footer>
   );
 }

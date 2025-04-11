@@ -3,11 +3,11 @@ import { useState,useEffect } from "react";
 import { FaUser, FaPhone, FaChevronDown, FaCalendarAlt } from "react-icons/fa";
 import { Log_sign_header } from "../login/components/Log_sign_header";
 import { useNavigate } from "react-router-dom";
+import { validateEmail,validatePassword,validatePhonenumber,validateSex } from "./components/validation";
 
 export default function Signup(){
     const [step, setStep] = useState(1);
     const totalSteps = 4;
-
     const[signupUserdata,setSignupUserdata ]=useState({
         email:"",
         password:"",
@@ -22,7 +22,7 @@ export default function Signup(){
 
     const checkUserExisting = async ()=>{
         try {
-            const response = await fetch(`http://localhost:5000/User/checkUsername?userName=${signupUserdata.name}`,{ method: "GET",
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/User/checkUsername?userName=${signupUserdata.name}`,{ method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },})
@@ -88,11 +88,6 @@ export default function Signup(){
 function Step1({setStep , setSignupUserdata ,signupUserdata}) {
     const [tempPassword,settempPassword] = useState("")
     const [disableButtonNext,setButtonNext] = useState(true);
-    
-    const validateEmail = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
 
     // Disable next button
     useEffect(() => {
@@ -105,12 +100,12 @@ function Step1({setStep , setSignupUserdata ,signupUserdata}) {
 
     // Check if password matches
     const checkPassword = () =>{
-        if(tempPassword !== signupUserdata  .password){
+        if(tempPassword !== signupUserdata.password){
             alert("Password does not match");
             return false;
         }
-        if(signupUserdata .password == ""){
-            alert("Password field is required");
+        if(validatePassword(signupUserdata.password) == false){
+            alert("password should have atleast have 8 letter");
             return false;
        }
        if(validateEmail(signupUserdata.email) == false){
@@ -145,13 +140,6 @@ function Step2({setStep ,setSignupUserdata , checkUserExisting, signupUserdata }
 
     const [disableButtonNext,setButtonNext] = useState(true);
     
-    const validateNumber = () => {
-        if(signupUserdata.phone == null || signupUserdata.phone.length != 10){
-            alert("Invalid Phone Number");
-            return false;
-        }
-    }
-
     // Disable next button if any field is empty
     useEffect(() => {
         if (signupUserdata.name  && signupUserdata.phone && signupUserdata.gender && signupUserdata.date_of_birth) {
@@ -168,7 +156,8 @@ function Step2({setStep ,setSignupUserdata , checkUserExisting, signupUserdata }
             alert("User already exists");
             return;
         }
-        if(validateNumber() == false){
+        if(validatePhonenumber(signupUserdata.phone) == false){
+            alert("Phone number should have exactly 10 digits")
             return false;
         }
         setStep((prev) => prev + 1)
@@ -212,6 +201,23 @@ function Step3({setStep ,setSignupUserdata, signupUserdata }) {
     
     const [disableButtonNext,setButtonNext] = useState(true);
     
+    
+    const checkOTP= async() => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/User/sendOTP`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({email : signupUserdata.email})
+            }) ;
+            const data = await response.json();
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     // Disable next button if any field is empty
     useEffect(() => {
         if (signupUserdata.city && signupUserdata.pincode && signupUserdata.state) {
@@ -220,6 +226,11 @@ function Step3({setStep ,setSignupUserdata, signupUserdata }) {
             setButtonNext(true);
         }
     }, [signupUserdata.city, signupUserdata.state, signupUserdata.pincode]);
+
+    const handleNext = () => {
+        checkOTP();
+        () => {setStep((prev) => prev + 1)}
+    }
 
     return(
         
@@ -241,7 +252,7 @@ function Step3({setStep ,setSignupUserdata, signupUserdata }) {
         <a href="/login" className=" text-blue-400">Already have an account?, Log In.</a>
         <div className="flex gap-10">
                 <button  onClick={()=>{setStep((prev) => prev - 1)}} className="bg-green-400 text-white text-center rounded-lg h-6 w-30 disabled:cursor-not-allowed disabled:bg-gray-400">Back</button>
-                <button  onClick={()=>{setStep((prev) => prev + 1)}} className="bg-green-400 text-white text-center rounded-lg h-6 w-30 disabled:cursor-not-allowed disabled:bg-gray-400" disabled={disableButtonNext}>Next</button>
+                <button  onClick={handleNext()} className="bg-green-400 text-white text-center rounded-lg h-6 w-30 disabled:cursor-not-allowed disabled:bg-gray-400" disabled={disableButtonNext}>Next</button>
         </div>
         </ div>
     )
@@ -249,6 +260,8 @@ function Step3({setStep ,setSignupUserdata, signupUserdata }) {
 function Step4({setStep , signupUserdata, addUser}) {
     const [disableButtonNext,setButtonNext] = useState(true);
     const [tempVerifyOtp,setTempVerifyOtp] = useState("")
+
+
     // Disable next button if any field is empty
     useEffect(() => {
         if (tempVerifyOtp) {

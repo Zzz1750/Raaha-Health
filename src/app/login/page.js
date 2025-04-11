@@ -2,12 +2,18 @@
 import { Log_sign_header } from "./components/Log_sign_header"
 import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch} from "../../store/hooks";
+import {login} from "../../store/slices/authSlice"
+
 export default function Login(){
     const [disableButton, setDisableButton] = useState(true);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
+    const dispatch = useAppDispatch();
 
+  
+    
     useEffect(()=>{
         if(email && password){
             setDisableButton(false);
@@ -31,7 +37,8 @@ export default function Login(){
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             if(data.message == "Login successful"){
-                console.log(data.accessToken);
+                
+                dispatch(login({accessToken: data.accessToken , user:JSON.parse(atob(data.accessToken.split(".")[1]))}))
                 router.push("/")
             }
             else{

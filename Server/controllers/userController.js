@@ -1,8 +1,19 @@
 const User = require('../models/Usermodel');
+const messageController = require('./messageController')
 
 // ✅ User Profile (Protected Route)
-exports.getUserProfile = (req, res) => {
-    res.json({ message: "Welcome to your profile", user: req.user });
+exports.getUserDetails = async(req, res) => {
+    const userID = req.query.ID
+    try {
+        console.log(userID)
+        const user =  await User.findById({_id: userID},{ password: 0 ,updatedAt: 0, __v: 0 });
+        if(!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({message: "Internal Errorrs"})   
+    }
 };
 
 // 🔹 Logout (Invalidate Refresh Token)
@@ -28,9 +39,40 @@ exports.checkUsername = async (req, res) => {
 
 // ✅ Send OTP 
 exports.sendOTP = async (req, res) => {
-    const { email } = req.query;
+    const { email } = req.body;
     if (!email) {
         return res.status(400).json({ error: "Email is required" });
     }
+    messageController.sendOTPMail(email);
     return res.status(200).json({ message: "OTP sent successfully!" });
 };
+
+exports.updatePersonalInfo = async (req, res) => {
+    const {userData , userID} = req.body;
+    console.log(userData)
+    try{
+        const user = await User.findByIdAndUpdate(userID, {username: userData.firstName , phone: userData.phone , gender: userData.sex , dob: userData.dateOfBirth}, {new: true});
+        if(!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    }
+    catch(error){
+        return res.status(500).json({message: "Internal Error"})
+    }
+}
+
+exports.updatePersonalAddress = async (req, res) => {
+    const {userData , userID} = req.body;
+    console.log(userData)
+    try{
+        const user = await User.findByIdAndUpdate(userID , {address: userData.address , city: userData.city , state: userData.state , country: userData.country , pincode: userData.pincode}, {new: true});
+        if(!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    }
+    catch(error){
+        return res.status(500).json({message: "Internal Error"})
+    }
+}
