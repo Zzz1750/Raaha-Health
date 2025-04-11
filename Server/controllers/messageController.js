@@ -1,29 +1,46 @@
 const nodemailer = require("nodemailer");
 require('dotenv').config();
 
-
 const transporter = nodemailer.createTransport({
-  host: "smtp.zoho.com",
+  // service: 'gmail',
+  host: "smtp.zoho.in",
   port: 465,
-  secure: true, // true for port 465, false for other ports
+  secure: true,
   auth: {
     user: process.env.ZOHO_ID,
     pass: process.env.ZOHO_APP_PASSWORD,
   },
 });
+transporter.verify((err, success) => {
+  if (err) {
+    console.error("SMTP Config Error:", err);
+  } else {
+    console.log("SMTP Server is ready to take messages");
+  }
+});
 
-// send mail with defined transport object
-exports.sendOTPMail = async(email) => {
-    try {
-        await transporter.sendMail({
-            from: `"Maddison Foo Koch 👻" <${process.env.ZOHO_ID}>`, // sender address
-            to: `${email}`, // list of receivers
-            subject: "Hello ✔", // Subject line
-            text: "Hello world?", // plain text body
-            html: "<b>Hello world?</b>", // html body
-        });
-        console.log("Mail has been send !");
-    } catch (error) {
-        console.log(error)
-    }
-}
+exports.sendOTPMail = async (req, res) => {
+  console.log(email)
+  try {
+    await transporter.sendMail({
+      from: `"Raaha Health" <${process.env.ZOHO_ID}>`,
+      to: email,
+      subject: "Your OTP Code",
+      text: "Here is your OTP.",
+      html: "<b>Your OTP is: 123456</b>", // Replace with dynamic OTP if needed
+    });
+
+    console.log("Mail has been sent!");
+    res.status(200).json({
+      success: true,
+      message: "OTP Sent Successfully",
+    });
+  } catch (error) {
+    console.error("Failed to send OTP:", error);
+    return res.status(500).json({
+      status: 500,
+      message: "Failed to send OTP",
+      error: error.message,
+    });
+  }
+};

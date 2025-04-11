@@ -4,6 +4,7 @@ const User = require('../models/Usermodel');
 
 const jwt = require('jsonwebtoken');
 const userController = require('../controllers/userController');
+const messageController = require('../controllers/messageController')
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.use(express.json());
@@ -16,6 +17,6 @@ router.put('/updateUserDetails',authMiddleware, userController.updatePersonalInf
 
 router.put('/updateUserAddress',authMiddleware, userController.updatePersonalAddress);
 
-router.post('/sendOTP',userController.sendOTP);
+router.post('/sendOTP',messageController.sendOTPMail);
 
 module.exports = router;

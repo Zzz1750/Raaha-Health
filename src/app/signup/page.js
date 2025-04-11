@@ -204,15 +204,16 @@ function Step3({setStep ,setSignupUserdata, signupUserdata }) {
     
     const checkOTP= async() => {
         try {
+            console.log(signupUserdata?.email)
             const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/User/sendOTP`,{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({email : signupUserdata.email})
+                body: JSON.stringify({email : signupUserdata?.email})
             }) ;
             const data = await response.json();
-
+            return data;
         } catch (error) {
             console.log(error)
         }
@@ -227,10 +228,16 @@ function Step3({setStep ,setSignupUserdata, signupUserdata }) {
         }
     }, [signupUserdata.city, signupUserdata.state, signupUserdata.pincode]);
 
-    const handleNext = () => {
-        checkOTP();
-        () => {setStep((prev) => prev + 1)}
-    }
+    const handleNext = async () => {
+        const response = await checkOTP();
+      
+        if (response?.ok || response?.success) {
+          alert("OTP sent successfully");
+          setStep((prev) => prev + 1);
+        } else {
+          alert("Failed to send OTP. Please try again.");
+        }
+      };
 
     return(
         
@@ -252,7 +259,7 @@ function Step3({setStep ,setSignupUserdata, signupUserdata }) {
         <a href="/login" className=" text-blue-400">Already have an account?, Log In.</a>
         <div className="flex gap-10">
                 <button  onClick={()=>{setStep((prev) => prev - 1)}} className="bg-green-400 text-white text-center rounded-lg h-6 w-30 disabled:cursor-not-allowed disabled:bg-gray-400">Back</button>
-                <button  onClick={handleNext()} className="bg-green-400 text-white text-center rounded-lg h-6 w-30 disabled:cursor-not-allowed disabled:bg-gray-400" disabled={disableButtonNext}>Next</button>
+                <button  onClick={()=>{handleNext()}} className="bg-green-400 text-white text-center rounded-lg h-6 w-30 disabled:cursor-not-allowed disabled:bg-gray-400" disabled={disableButtonNext}>Next</button>
         </div>
         </ div>
     )
@@ -279,9 +286,21 @@ function Step4({setStep , signupUserdata, addUser}) {
     };
     checkemail
 
+    const handleResentOTP = async () => {
+        const response = await checkOTP();
+          
+        if (response?.ok || response?.success) {
+          alert("OTP sent successfully");
+         
+        } else {
+          alert("Failed to send OTP. Please try again.");
+        }
+      };       
+            
     const handleSubmit= async()=>{
 
         try{
+
             addUser();
             window.location.href = "/login"; 
         }
@@ -300,7 +319,7 @@ function Step4({setStep , signupUserdata, addUser}) {
                 <div className="flex border border-gray-300 rounded-lg h-10 w-60">
                     <input type="text" placeholder="Enter OTP" className="pl-10 flex-grow" onChange={(e)=>{setTempVerifyOtp(e.target.value)}} />
                 </div>
-                <a href="" className="text-blue-400">Resend OTP</a>
+                <button onClick={() => {handleResentOTP()} } className="text-blue-400">Resend OTP</button>
             </div>
 
             <div className="flex gap-10">
