@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+import Image from next/image
+import { useState } from 'react'
+
+export default function Main() {
+    return (
+        <div classname="p-6 border rounded-lg shadow-md bg-white">
+
+        </div>
+    )
+}
+
+
+=======
 import React from 'react';
 import Image from 'next/image';
 
@@ -35,3 +49,4 @@ const ProfileComponent = ({userDetails}) => {
 };
 
 export default ProfileComponent;
+>>>>>>> 24c0496a0bb13b0e755ea8886fa9c5da4d6008fa

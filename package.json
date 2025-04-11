@@ -21,7 +21,11 @@
     "form-data": "^4.0.2",
     "framer-motion": "^12.4.10",
     "jsonwebtoken": "^9.0.2",
+<<<<<<< HEAD
+    "lucide-react": "^0.485.0",
+=======
     "lucide-react": "^0.487.0",
+>>>>>>> 24c0496a0bb13b0e755ea8886fa9c5da4d6008fa
     "mime-type": "^5.0.2",
     "mime-types": "^2.1.35",
     "mongoose": "^8.12.1",
