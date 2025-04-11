@@ -170,7 +170,7 @@ export default function DoctorPanel({ searchQuery , doctors , selectedDate , sel
             <div className="bg-teal-50 px-4 py-3 flex justify-between items-center">
               <div>
                 <p className="font-bold">₹{doctor.price}</p>
-                <p className="text-xs text-gray-600">{doctor.sessionDuration}</p>
+                <p className="text-xs text-gray-600">{doctor.sessionDuration} min session</p>
               </div>
               <button onClick={()=> {router.push(`/session-summary/${doctor._id}?date="${selectedDate}&time="${selectedTime}"`)}} className="bg-teal-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-teal-700 transition">
                 Book session
