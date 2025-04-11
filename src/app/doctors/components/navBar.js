@@ -25,7 +25,7 @@ export default function NavBar() {
 
       {/* Top Navigation */}
       <div className="flex flex-col gap-4">
-        {NAV_ITEMS.map((item) => (
+        {NAV_ITEMS.map((item) => (  
           <div
             key={item.id}
             onClick={() => setActiveItem(item.id)} // Set active item on click

@@ -98,7 +98,7 @@ export default function Home() {
                 className="bg-[#043C3C] text-white border-none shadow-lg w-full sm:w-full md:w-[500px] h-auto sm:h-auto md:h-[200px] mx-auto rounded-[12px] flex items-center p-4 sm:p-6"
               >
                 <div className="flex-1 pr-2 sm:pr-4">
-                  <h1 className={`${inter.className} text-xl sm:text-2xl md:text-[28px] lg:text-[32px] font-extrabold mb-4 sm:mb-6 md:mb-10 text-green-400 leading-tight`}>
+                  <h1 className={`${inter.className} text-xl sm:text-2xl md:text-[28px] lg:text-[26px] font-extrabold mb-4 sm:mb-6 md:mb-10 text-green-400 leading-tight`}>
                     {card.title}
                   </h1>
                   <p className={`${inter.className} text-base sm:text-lg md:text-[20px] lg:text-[24px] font-semibold text-white leading-snug`}>
@@ -177,7 +177,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12 sm:mb-20 md:mb-32">How It <span className="text-green-600">Works</span>?</h2>
           
-          {/* step 1 */}
+          {/* tep 1 */}
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12 md:mb-16 items-center"
             initial={{ opacity: 0, x: -100 }}
