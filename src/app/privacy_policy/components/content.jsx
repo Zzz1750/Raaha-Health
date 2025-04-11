@@ -22,6 +22,14 @@ export default function Content_privacy() {
 }
 
 const sections = [
+    { title: "Definitions", content: [
+        "Company: 'Raaha,' 'Raaha Health,' 'Company,' 'we,' 'our,' 'us,' 'Service Provider' or similar terminology refer to Raaha as the provider of services for the remainder of this document.",
+        "User: 'Client,' 'user,' 'you,' 'your' or similar terminology refer to individuals using the platform for mental health services.",
+        "Platform: 'Platform' or similar terminology refer to any mobile app, website, or web links that the User can use to access services provided by Raaha.",
+        "Mental Health Professional: 'Expert,' 'therapist,' 'psychiatrist,' 'psychologist,' 'counselor,' 'consultant' or similar terminology refer to the licensed professionals registered on Raaha.",
+        "Consultation: A professional mental health session conducted through Raaha between a User and a Mental Health Professional.",
+        "Payout: The earnings received by Experts for consultations after applicable deductions."
+    ]},
     { title: "Introduction", content: "Raaha values your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and protect your information." },
     { title: "Data Collection", content: "We collect personal details (name, email, phone, etc.), health information, payment details, and technical data like device info and cookies." },
     { title: "Purpose of Data Collection", content: "Your data is collected for authentication, booking and consultation management, payment processing, and improving platform functionality." },

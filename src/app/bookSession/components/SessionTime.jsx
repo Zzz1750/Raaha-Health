@@ -1,8 +1,9 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { parse, isSameDay } from "date-fns"; 
 
-export default function SessionTime({ selectedDate }) {
+export default function SessionTime({ selectedDate ,onTimeSelect }) {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [availableSlots, setAvailableSlots] = useState([]);
   const scrollRef = useRef(null);
@@ -10,8 +11,11 @@ export default function SessionTime({ selectedDate }) {
   // Generate time slots (9:00 AM to 8:50 PM)
   const sessions = Array.from({ length: 12 }, (_, i) => {
     const startHour = 9 + i;
-    const startTime = `${startHour > 12 ? startHour - 12 : startHour}:00${startHour >= 12 ? "pm" : "am"}`;
-    const endTime = `${startHour > 12 ? startHour - 12 : startHour}:50${startHour >= 12 ? "pm" : "am"}`;
+    const hour12 = startHour > 12 ? (startHour - 12).toString().padStart(2, "0") : startHour.toString().padStart(2, "0");
+    const startTime = `${hour12}:00${startHour >= 12 ? " PM" : " AM"}`;
+    const endTime = `${hour12}:50${startHour >= 12 ? " PM" : " AM"}`;
+    
+    console.log()
     return {
       timeString: `${startTime} - ${endTime}`,
       hour24: startHour,
@@ -23,12 +27,9 @@ export default function SessionTime({ selectedDate }) {
   useEffect(() => {
     const updateAvailability = () => {
       const now = new Date();
-      
+      const selected = selectedDate ? new Date(selectedDate) : null;
       // Check if selected date is today
-      const isToday = selectedDate && 
-                     selectedDate.getDate() === now.getDate() &&
-                     selectedDate.getMonth() === now.getMonth() &&
-                     selectedDate.getFullYear() === now.getFullYear();
+      const isToday = selected && isSameDay(selected, now);
 
       if (!isToday) {
         // For non-today dates, all slots are available
@@ -82,6 +83,7 @@ export default function SessionTime({ selectedDate }) {
   const handleSlotClick = (session) => {
     if (!session.isAvailable) return;
     setSelectedSlot(selectedSlot === session.timeString ? null : session.timeString);
+    onTimeSelect(selectedSlot === session.timeString ? null : session.timeString);
   };
 
   return (

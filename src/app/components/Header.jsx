@@ -41,7 +41,7 @@ export default function Header() {
             <nav className="hidden lg:flex text-sm gap-15 lg:text-sm mt-8 mr-5">
                 <a href="/specialists" className="hover:text-gray-300">SPECIALISTS</a>
                 <a href="/bookSession" className="hover:text-gray-300">BOOK A SESSION</a>
-                <a href="/aboutUs" className="hover:text-gray-300">ABOUT US</a>
+                <a href="/aboutus" className="hover:text-gray-300">ABOUT US</a>
                 <a href="/join" className="hover:text-gray-300">JOIN US</a>
                 {
                         isAuthenticated ? 

@@ -11,16 +11,6 @@ exports.createDoctor = async (req, res) => {
     }
 };
 
-// Get all doctors
-exports.getDoctors = async (req, res) => {
-    try {
-        const doctors = await Doctor.find();
-        res.status(200).json(doctors);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
 // Get a doctor by ID
 exports.getDoctorById = async (req, res) => {
     try {
@@ -60,6 +50,46 @@ exports.getSlotsbyID = async(req, res)=>{
         const slots = await DSlots.find({ doctorId: doctorID})
         if(!slots)return res.status(404).json({error: "No slots found for this doctor on this date"});
         res.status(200).json(slots);
+    }
+    catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.getAllDoctors = async(req, res)=>{
+    try{
+        const doctors = await Doctor.find()
+        if(!doctors)return res.status(404).json({error: "No doctors found"});
+        res.status(200).json(doctors);
+    }
+    catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.getDoctorsByDate = async(req, res)=>{
+    try{
+        const date = req.query.date
+        const selectedDate =new Date(date)
+        console.log(selectedDate)
+        const doctors = await DSlots.find({ date:   { $gte: selectedDate, $lte: selectedDate  }}).populate("doctorId")
+        console.log("CONTROLLERS ",doctors)
+        if(!doctors)return res.status(404).json({error: "No doctors found"});
+        res.status(200).json(doctors);
+    }
+    catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}
+
+exports.getDoctorsByDate_and_slot= async(req, res)=>{
+    try{
+        const date = req.query.date
+        const startTime = req.query.time
+        const selectedDate =new Date(date)
+        const doctors = await DSlots.find({ date: { $gte: selectedDate, $lte: selectedDate  } , slots: { $elemMatch: { startTime: startTime }}}).populate("doctorId");
+        if(!doctors)return res.status(404).json({error: "No doctors found"});
+        res.status(200).json(doctors);
     }
     catch(error){
         res.status(500).json({ error: error.message });

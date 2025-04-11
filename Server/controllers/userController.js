@@ -46,3 +46,33 @@ exports.sendOTP = async (req, res) => {
     messageController.sendOTPMail(email);
     return res.status(200).json({ message: "OTP sent successfully!" });
 };
+
+exports.updatePersonalInfo = async (req, res) => {
+    const {userData , userID} = req.body;
+    console.log(userData)
+    try{
+        const user = await User.findByIdAndUpdate(userID, {username: userData.firstName , phone: userData.phone , gender: userData.sex , dob: userData.dateOfBirth}, {new: true});
+        if(!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    }
+    catch(error){
+        return res.status(500).json({message: "Internal Error"})
+    }
+}
+
+exports.updatePersonalAddress = async (req, res) => {
+    const {userData , userID} = req.body;
+    console.log(userData)
+    try{
+        const user = await User.findByIdAndUpdate(userID , {address: userData.address , city: userData.city , state: userData.state , country: userData.country , pincode: userData.pincode}, {new: true});
+        if(!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    }
+    catch(error){
+        return res.status(500).json({message: "Internal Error"})
+    }
+}
