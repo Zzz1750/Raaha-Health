@@ -72,7 +72,11 @@ export const TherapistCard = ({doctor}) => {
         <div className="px-3 sm:px-4 py-2 sm:py-3">
           <div className="mb-2 sm:mb-3">
             <p className="font-bold text-sm">Qualification:</p>
-            <p className="text-sm text-gray-700">{doctor.qualification}</p>
+            <div className="flex gap-2">
+            {
+            doctor.qualification?.map((qual , index , array)=>(<p key={qual} className="text-sm text-gray-700"> {qual == array[0] ? qual : `, ${qual}` }</p>))
+            }
+            </div>
           </div>
           
           <div>

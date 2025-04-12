@@ -103,3 +103,24 @@ export const getDoctorsByDate_and_slot = (async (date , time , token) => {
     console.log(error)
   }
 })
+
+export const getDoctorsbyJobtitle = (async (token , jobTitle) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/Doctor/getDoctorsbyJobtitle?title=${jobTitle}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      credentials:'include',
+    })      
+    if (!response.ok) {
+      throw new Error("Failed to fetch doctor details");
+    }
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  } 
+});
