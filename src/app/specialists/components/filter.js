@@ -2,24 +2,34 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
   // Filter Component
-export const Filter = ({onJobselect}) => {
+export const Filter = ({onJobselect , onModeselected , onPricerangeSelected}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedProfessional, setSelectedProfessional] = useState();
-    const [selectedSession, setSelectedSession] = useState('In-person');
-    const [selectedPrice, setSelectedPrice] = useState('1500-2000');
+    const [onFilterSelected, setFilterSelected] = useState(false);
+    const [selectedSession, setSelectedSession] = useState();
+    const [selectedPrice, setSelectedPrice] = useState();
     
     // Handler functions for selections
     const handleProfessionalSelect = (value) => {
-      setSelectedProfessional(value);
+      setSelectedProfessional((prev) => prev === value? null : value);
     };
     
     const handleSessionSelect = (value) => {
-      setSelectedSession(value);
+      setFilterSelected(!onFilterSelected);
+      setSelectedSession((prev) => prev === value? null : value);
     };
     
     const handlePriceSelect = (value) => {
-      setSelectedPrice(value);
+      setFilterSelected(!onFilterSelected);
+      setSelectedPrice((prev) => prev === value? null : value);
+
     };
+
+    const handleSubmit = ()=> {
+      onModeselected(selectedSession)
+      onPricerangeSelected(selectedPrice)
+      setIsOpen(false)
+    }
     useEffect(()=>{
       onJobselect(selectedProfessional)
 
@@ -42,7 +52,7 @@ export const Filter = ({onJobselect}) => {
             {/* Header */}
             <div className="flex justify-between items-center p-3 sm:p-4 border-b border-[#13A4A0]">
               <h2 className="text-lg sm:text-xl text-[#13A4A0] font-medium">Filters</h2>
-              <button className="bg-green-400 text-white px-4 sm:px-6 py-1 sm:py-1.5 rounded-lg hover:bg-[#108F8B] transition-colors">
+              <button onClick={()=>handleSubmit()} className="bg-green-400 text-white px-4 sm:px-6 py-1 sm:py-1.5 rounded-lg hover:bg-[#108F8B] transition-colors">
                 Apply
               </button>
             </div>
