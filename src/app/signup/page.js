@@ -4,6 +4,7 @@ import { FaUser, FaPhone, FaChevronDown, FaCalendarAlt } from "react-icons/fa";
 import { Log_sign_header } from "../login/components/Log_sign_header";
 import { useNavigate } from "react-router-dom";
 import { validateEmail,validatePassword,validatePhonenumber,validateSex } from "./components/validation";
+import {checkOTP} from '../../SERVICE/authService'
 
 export default function Signup(){
     const [step, setStep] = useState(1);
@@ -287,7 +288,7 @@ function Step4({setStep , signupUserdata, addUser}) {
     checkemail
 
     const handleResentOTP = async () => {
-        const response = await checkOTP();
+        const response = await resendOTP();
           
         if (response?.ok || response?.success) {
           alert("OTP sent successfully");
@@ -297,17 +298,22 @@ function Step4({setStep , signupUserdata, addUser}) {
         }
       };       
             
-    const handleSubmit= async()=>{
-
-        try{
-
-            addUser();
-            window.location.href = "/login"; 
+      const handleSubmit = async () => {
+        try {
+          const response = await checkOTP(email, tempVerifyOtp);
+      
+          if (response?.success) {
+            await addUser(); // Make sure this is awaited
+            window.location.href = "/login"; // Redirect after successful user addition
+          } else {
+            alert("Invalid OTP or expired. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error verifying OTP or adding user:", error);
+          alert("Something went wrong. Please try again later.");
         }
-        catch(error){
-            console.error("Error adding user:", error);
-        }
-    }
+      };
+      
     return (
         <div className="flex flex-col justify-center items-center h-96 w-96 align-middle gap-5">
             <h1 className="text-2xl">Verify OTP</h1>   

@@ -19,4 +19,7 @@ router.put('/updateUserAddress',authMiddleware, userController.updatePersonalAdd
 
 router.post('/sendOTP',messageController.sendOTPMail);
 
+router.post('/verifyOTP', messageController.verifyOTP);
+
+
 module.exports = router;

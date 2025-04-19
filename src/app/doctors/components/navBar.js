@@ -20,7 +20,7 @@ export default function NavBar() {
   const [activeItem, setActiveItem] = useState("dashboard"); // Default active item
 
   return (
-    <div className="bg-white shadow-lg rounded-xl p-6 w-64 border border-gray-200">
+    <div className="bg-white rounded-xl p-6 w-64  ">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">Menu</h2>
 
       {/* Top Navigation */}

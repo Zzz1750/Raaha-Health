@@ -25,7 +25,7 @@ exports.addUser = async (req, res) => {
             return res.status(400).json({ error: "Email already exists" });
         }
         const salt=await bcrypt.genSalt(10);
-        console.log("Passweord: ", userDetails.password ,"Type of Password: ",typeof userDetails.password, "salt: " , salt)
+        // console.log("Passweord: ", userDetails.password ,"Type of Password: ",typeof userDetails.password, "salt: " , salt)
         const hashedPassword = await bcrypt.hash(userDetails.password, salt);
 
         const newUser = new User({
