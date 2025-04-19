@@ -20,12 +20,12 @@ export default function NavBar() {
   const [activeItem, setActiveItem] = useState("dashboard"); // Default active item
 
   return (
-    <div className="bg-white rounded-xl p-6 w-64  ">
+    <div className="bg-white rounded-xl p-6 w-full sm:w-44 md:w-64 lg:w-72">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">Menu</h2>
 
       {/* Top Navigation */}
       <div className="flex flex-col gap-4">
-        {NAV_ITEMS.map((item) => (  
+        {NAV_ITEMS.map((item) => (
           <div
             key={item.id}
             onClick={() => setActiveItem(item.id)} // Set active item on click
