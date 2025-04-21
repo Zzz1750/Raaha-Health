@@ -32,13 +32,13 @@ export default function Home() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] text-center font-bold mb-6 sm:mb-8 md:mb-12 text-white relative mt-6 sm:mt-8 md:mt-12">
             Become a Part of Our Growing Network
           </h2>
-          <p className="font-extralight text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-6 sm:mb-8 text-gray-300 max-w-2xl">
+          <p className="font-extralight text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-6 sm:mb-8 text-gray-300 max-w-2xl text-left">
             <span className="text-green-400 font-poppinsw">Raaha Health</span> is inviting mental health professionals to join our platform and help make quality mental healthcare accessible across India.
           </p>
-          <button className="bg-white text-[#0a5c4c] hover:bg-green-100 px-4 sm:px-6 py-2 sm:py-3 text-base sm:text-lg font-semibold rounded-lg shadow-md">
+          <button className="border border-grey-200 text-[#0a5c4c] hover:bg-green-100 px-4 sm:px-6 py-2 sm:py-3 text-base sm:text-lg font-semibold rounded-lg shadow-md">
             Know More
           </button>
-        </div>
+        </div>s
       </section>
 
       {/* Why Choose Raaha */}
