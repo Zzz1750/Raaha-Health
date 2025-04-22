@@ -1,4 +1,4 @@
-import NavBar from "../components/navBar";
+import SideBar from "../components/sidebar";
 import ClientList from "../components/clientList";
 import DoctorHeader from "../components/DocterHeader";
 
@@ -11,7 +11,7 @@ export default function Clients() {
       <div className="flex w-full bg-gray-100">
       {/* Left Sidebar */}
       <div className=" bg-white shadow-md">
-        <NavBar />
+        <SideBar />
       </div>
 
       {/* Main Content Area */}
