@@ -6,6 +6,8 @@ import Audiocall_Icon_selected from '../../../../public/images/DoctorDashboard/A
 import Videocall_Icon_Unselected from '../../../../public/images/DoctorDashboard/Video_call_Icon_Unselected.png'
 import Audiocall_Icon_Unselected from '../../../../public/images/DoctorDashboard/Audio_call_Icon.png'
 import PinIcon from '../../../../public/images/DoctorDashboard/Map_droppin_Icon.png'
+import MorningIcon from '../../../../public/images/DoctorDashboard/Morning_Icon.png'
+import EveningIcon from '../../../../public/images/DoctorDashboard/Evening_Icon.png'
 import Calendar from './Calendar';
 
 
@@ -78,8 +80,9 @@ export default function AppointmentDetails() {
                         </div>
                         {['Morning', 'Evening'].map((time, i) => (
                         <div key={i}>
-                            <div className="flex items-center justify-between mb-2">
-                            <span className="font-semibold text-gray-800">🌤 {time}</span>
+                            <div className="flex items-center mb-2">
+                            <Image src={time === 'Morning' ? MorningIcon : EveningIcon} alt='🌤' />
+                            <span className="font-semibold text-gray-800"> {time}</span>
                             </div>
                             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
                             {(time === 'Morning' ? morningSlots : eveningSlots).map((slot) => (
@@ -122,7 +125,8 @@ export default function AppointmentDetails() {
                                         name="availability"
                                         value="online"
                                         checked={availability === 'online'}
-                                        onChange={() => setAvailability('online')}  
+                                        onChange={() => setAvailability('online')} 
+                                        className='accent-black' 
                                         />
                                         <span className="font-semibold text-gray-800">Online</span>
                                     </label>
@@ -150,6 +154,7 @@ export default function AppointmentDetails() {
                                             value="offline"
                                             checked={availability === 'offline'}
                                             onChange={() => setAvailability('offline')}
+                                            className='accent-black' 
                                             />
                                             <span className="font-semibold text-gray-800">Offline</span>
                                         </label>
