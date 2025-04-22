@@ -6,7 +6,7 @@ import Footer from "./Footer";
 export default function LayoutWrapper({ children }) {
   const pathname = usePathname(); 
 
-  const staticExcludedRoutes = ["/privacy_policy","/cancellation_policy","/tc","/login","/signup" ,"/session-summary","specialist","/specialist/[id]","/specialist/[id]/[name]"];
+  const staticExcludedRoutes = ["/privacy_policy","/cancellation_policy","/tc","/login","/signup" ,"/session-summary","specialist","/specialist/[id]","/specialist/[id]/[name]","/doctors"];
 
    // Define regex patterns for dynamic routes
    const dynamicExcludedRoutes = [/^\/session-summary\/.+$/,/^\/doctors\/.+$/];
