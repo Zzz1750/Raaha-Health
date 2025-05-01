@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { IBM_Plex_Sans } from 'next/font/google';
+import { useRouter } from 'next/navigation';
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
@@ -14,43 +15,48 @@ const NAV_ITEMS = [
     id: "dashboard", 
     src: "/images/DoctorDashboard/DoctorNavbarHome_Icon.png", 
     label: "Dashboard",
-    className: ibmPlexSans.className 
+    className: ibmPlexSans.className ,
+    Link: "/doctors/dashboard"
   },
   { 
     id: "appointment", 
     src: "/images/DoctorDashboard/DoctorDashboard_Date-fill_Icon.png", 
     label: "Appointment",
-    className: ibmPlexSans.className
+    className: ibmPlexSans.className,
+    Link: "/doctors/appointments"
   },
   { 
     id: "clients", 
     src: "/images/DoctorDashboard/DoctorDashboard_client_Icon.png", 
     label: "Clients",
-    className: ibmPlexSans.className 
+    className: ibmPlexSans.className ,
+    Link: "/doctors/clientsPage"
   },
   { 
     id: "earnings", 
     src: "/images/DoctorDashboard/DoctorDashboard_earning_Icon.png", 
     label: "Earnings",
-    className: ibmPlexSans.className
+    className: ibmPlexSans.className,
+    Link: "/doctors/earnings"
   },
   { 
     id: "community", 
     src: "/images/DoctorDashboard/DocterDashboard_community_Icon.png", 
     label: "Community",
-    className: ibmPlexSans.className 
+    className: ibmPlexSans.className ,
+    Link: "/doctors/community"
   },
 ];
 
 const FOOTER_ITEMS = [
-  { id: "profile", src: "/images/DoctorDashboard/DocterDashboard_Profile_Icon.png", label: "Profile" },
-  { id: "support", src:"/images/DoctorDashboard/DocterDashboard_FAQ_ICON.png", label: "Support & Help"},
-  { id: "logout", src: "/images/DoctorDashboard/DocterDashboard_Logout_Icon.png", label: "Log Out", className: "text-red-500" },
+  { id: "profile", src: "/images/DoctorDashboard/DocterDashboard_Profile_Icon.png", label: "Profile",Link: "/doctors/profile" },
+  { id: "support", src:"/images/DoctorDashboard/DocterDashboard_FAQ_ICON.png", label: "Support & Help",Link: "/doctors/support"},
+  { id: "logout", src: "/images/DoctorDashboard/DocterDashboard_Logout_Icon.png", label: "Log Out", className: "text-red-500" ,Link: "/doctors/logout"},
 ];
 
 export default function NavBar({ closeSidebar }) {
   const [activeItem, setActiveItem] = useState("dashboard");
-
+  const router = useRouter();
   const handleItemClick = (id) => {
     setActiveItem(id);
     if (closeSidebar) closeSidebar();
@@ -86,6 +92,7 @@ export default function NavBar({ closeSidebar }) {
 
       <div className="flex flex-col gap-6 lg:gap-8">
         {NAV_ITEMS.map((item) => (
+          <button key={item.id} onClick={() => {router.push(item.Link)}}>
           <div
             key={item.id}
             onClick={() => handleItemClick(item.id)}
@@ -111,6 +118,7 @@ export default function NavBar({ closeSidebar }) {
               {item.label}
             </p>
           </div>
+          </button>
         ))}
       </div>
 
@@ -118,8 +126,9 @@ export default function NavBar({ closeSidebar }) {
 
       <div className="flex flex-col gap-6 lg:gap-8 mb-6 mt-auto">
         {FOOTER_ITEMS.map((item) => (
+          <button key={item.id} onClick={() => {router.push(item.Link)}}> 
           <div
-            key={item.id}
+            
             onClick={() => handleItemClick(item.id)}
             className={`flex items-center gap-4 p-2 lg:p-3 cursor-pointer transition-colors rounded-md ${
               item.id === "logout" 
@@ -146,6 +155,7 @@ export default function NavBar({ closeSidebar }) {
             </div>
             <p className="text-base lg:text-lg">{item.label}</p>
           </div>
+          </button>
         ))}
       </div>
     </div>

@@ -4,7 +4,7 @@ import StatCard from './dashboard/components/statcard';
 import AppointmentCard from './dashboard/components/appointmentcard';
 import ClientRatingCard from './dashboard/components/clientratingcard';
 import ClientStatisticsCard from './dashboard/components/clientstatisticscard';
-import Navbar from './components/navbar';
+import Navbar from './components/sidebar';
 import { useState } from 'react';
 
 export default function Dashboard() {

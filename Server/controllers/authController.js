@@ -1,6 +1,7 @@
 
 const jwt = require('jsonwebtoken');
 const User = require('../models/Usermodel'); 
+const Doctor = require('../models/Doctormodel'); // Assuming you have a Doctor model
 const bcrypt = require ('bcrypt');
 
 const generateAccessToken = (user) => {
@@ -14,7 +15,7 @@ const generateRefreshToken = (user) => {
 let refreshTokens = []; // Should be stored in DB/Redis in production
 
 // ✅ Register User
-exports.addUser = async (req, res) => {
+exports.addUser = async (req, res ) => {
     const { userDetails } = req.body;
     if (!userDetails) {
         return res.status(400).json({ error: "User details are required" });
@@ -50,13 +51,14 @@ exports.addUser = async (req, res) => {
 
 
 // ✅ Login User
-exports.loginUser = async (req, res) => {
+exports.loginUser = async (req, res , type) => {
+    const Model = type === 'user'? User : Doctor; 
     const { email, password } = req.body;
 
     if (!email || !password) return res.status(400).json({ error: "Email and password required" });
 
     try {
-        const user = await User.findOne({ email });
+        const user = await Model.findOne({ email });
         if (!user) return res.status(400).json({ error: "Invalid credentials" });
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -84,7 +86,8 @@ exports.loginUser = async (req, res) => {
 };
 
 // ✅ Refresh Token
-exports.refreshToken = (req, res) => {
+exports.refreshToken = (req, res , type) => {
+    const Model = type === 'user'? User : Doctor; 
     const refreshToken = req.cookies?.refreshToken;
     if (!refreshToken) return res.status(401).json({ error: "Refresh token required" });
     
@@ -103,7 +106,7 @@ exports.refreshToken = (req, res) => {
 };
 
 // ✅ Logout User
-exports.logout = (req, res) => {
+exports.logout = (req, res , type) => {
     res.clearCookie("refreshToken", { 
         httpOnly: true, 
         secure: true,  // Ensure this is true if using HTTPS
