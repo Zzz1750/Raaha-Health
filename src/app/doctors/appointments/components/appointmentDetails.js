@@ -1,16 +1,12 @@
 'use client'
 import Image from 'next/image'
 import { useState } from 'react';
-import Videocall_Icon_selected from '../../../../../public/images/DoctorDashboard/Video_call_Icon.png'
-import Audiocall_Icon_selected from '../../../../../public/images/DoctorDashboard/Audio_call_Icon_Selected.png'
-import Videocall_Icon_Unselected from '../../../../../public/images/DoctorDashboard/Video_call_Icon_Unselected.png'
-import Audiocall_Icon_Unselected from '../../../../../public/images/DoctorDashboard/Audio_call_Icon.png'
-import PinIcon from '../../../../../public/images/DoctorDashboard/Map_droppin_Icon.png'
-import MorningIcon from '../../../../../public/images/DoctorDashboard/Morning_Icon.png'
-import EveningIcon from '../../../../../public/images/DoctorDashboard/Evening_Icon.png'
+
 import Calendar from '../../components/Calendar';
 import ManageSession from './manageSession';
 import AddSession from './addSession';
+import EditSession from './editSession';
+
 export default function AppointmentDetails() {
     const [activeTab, setActiveTab] = useState('add');
     const [selectedSlot, setSelectedSlot] = useState('2:00 - 2:50 PM');
@@ -18,6 +14,7 @@ export default function AppointmentDetails() {
     const [modeSelected, setModeSelected] = useState('audiocall');
     const [selectedDate, setSelectedDate] = useState(new Date());
     
+
     return (
         <div className='flex w-full h-full bg-[#F3F6FB]  justify-between '>
         {/* LEFT SECTION */}
@@ -59,12 +56,14 @@ export default function AppointmentDetails() {
                 </div>
 
              {/* Session Controller */} 
-             {activeTab=== 'add'? (
+             {/* {activeTab=== 'add'? (
                 <AddSession />)
                 : 
                 (<ManageSession />)
-                }
-                
+                } */}
+                {activeTab=== 'add' && (<AddSession setActiveTab={setActiveTab}/>)}
+                {activeTab=== 'manage' && (<ManageSession />)}
+                {activeTab=== 'edit' && (<EditSession />)}
 
             </div>
 

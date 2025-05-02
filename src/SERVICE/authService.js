@@ -22,3 +22,62 @@ export const checkOTP = async (email, otp) => {
     }
   };
   
+  export const FetchUserlogin = async(email,password) => {
+    try {
+      const response = await fetch('http://localhost:5000/Auth/login', {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({ email, password }),
+         credentials: "include", // ✅ Ensures cookies are sent
+     });
+         const data = await response.json();
+         console.log(data);
+         if (!response.ok) {
+             throw new Error(`HTTP error! Status: ${response.status}`);
+         }
+         return data;
+        //  if(data.message == "Login successful"){
+             
+        //      dispatch(login({accessToken: data.accessToken , user:JSON.parse(atob(data.accessToken.split(".")[1]))}))
+
+        //      router.push("/")
+        //      return "Login successful";
+        //  }
+        //  else{
+        //      alert("Invalid Credentials");
+        //  }
+    } catch (error) {
+        console.log(error);
+     
+    }
+ }
+
+ export const FetchDoctorLogin = async(email,password) => {
+     try {
+       const response = await fetch('http://localhost:5000/Auth/doc/login', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+          credentials: "include", // ✅ Ensures cookies are sent
+      });
+          const data = await response.json();
+          console.log(data);
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return data;
+        //  if(data.message == "Login successful"){
+             
+        //      dispatch(login({accessToken: data.accessToken , user:JSON.parse(atob(data.accessToken.split(".")[1]))}))
+
+        //      router.push("/")
+        //      return "Login successful";
+        //  }
+        //  else{
+        //      alert("Invalid Credentials");
+        //  }
+     } catch (error) {
+         console.log(error);
+      
+     }
+  }

@@ -9,7 +9,7 @@ import PinIcon from '../../../../../public/images/DoctorDashboard/Map_droppin_Ic
 import MorningIcon from '../../../../../public/images/DoctorDashboard/Morning_Icon.png'
 import EveningIcon from '../../../../../public/images/DoctorDashboard/Evening_Icon.png'
 
-export default function AddSession() {
+export default function AddSession({setActiveTab}) {
     const [selectedSlot, setSelectedSlot] = useState('2:00 - 2:50 PM');
     const [availability, setAvailability] = useState('online');
     const [modeSelected, setModeSelected] = useState('audiocall');
@@ -31,7 +31,7 @@ export default function AddSession() {
          {/* Session Time */}
         <div className=" flex flex-col gap-6 space-y-6 mt-5 p-5 bg-[#F3F6FB]">
             <div className="flex justify-end items-center">
-                <button className="text-sm text-[#066FCB] border border-[#066FCB] px-3 py-1 rounded  hover:border-gray-300 cursor-pointer">+ Edit Session</button>
+                <button onClick={() => {setActiveTab('edit')}} className="text-sm text-[#066FCB] border border-[#066FCB] px-3 py-1 rounded  hover:border-gray-300 cursor-pointer">+ Edit Session</button>
             </div>
             {['Morning', 'Evening'].map((time, i) => (
             <div key={i}>
@@ -55,9 +55,7 @@ export default function AddSession() {
                 </div>
             </div>
             ))}
-            <div className="flex justify-end items-center w-full">
-                <button className="mt-4 bg-teal-500 text-white px-4 py-2 rounded hover:shadow-xl hover:bg-gray-200 hover:text-teal-500 cursor-pointer">Add</button>
-            </div>
+           
         </div>
 
         {/* Availability */}
